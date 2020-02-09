@@ -5,6 +5,8 @@ module.exports = {
     'airbnb/hooks',
     'plugin:json/recommended',
     'plugin:@typescript-eslint/recommended',
+    'prettier/@typescript-eslint',
+    'plugin:prettier/recommended',
   ],
   plugins: ['@typescript-eslint', 'json'],
   parserOptions: {
