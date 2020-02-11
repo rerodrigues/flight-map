@@ -1,3 +1,4 @@
 import { AirportsSagas } from '../components/Airports/sagas';
+import { FlightsSagas } from '../components/Flights/sagas';
 
-export default [AirportsSagas];
+export default [AirportsSagas, FlightsSagas];

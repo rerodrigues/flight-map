@@ -1,39 +1,50 @@
 import { FlightRaw, Flight } from './types';
 
-export const toFlight = (rawFlight: FlightRaw): Flight => ({
-  companyCode: rawFlight['Cód.  Empresa'],
-  company: rawFlight.Empresa,
-  number: rawFlight['Nº VOO'],
-  planeModel: rawFlight['Equip.'],
-  monday: rawFlight.Seg,
-  tuesday: rawFlight.Ter,
-  wednesday: rawFlight.Qua,
-  thursday: rawFlight.Qui,
-  friday: rawFlight.Sex,
-  saturday: rawFlight.Sáb,
-  sunday: rawFlight.Dom,
-  numberOfSeats: rawFlight['Qtde Assentos'],
-  schedulePlan: {
-    code: rawFlight['Número Hotran'],
-    dateRequested: rawFlight['Data Solicitação'],
-    dateApproved: rawFlight['Data Aprovação'],
-    dateEffective: rawFlight['Data Vigência'],
-  },
-  operationType: rawFlight['Natureza Operação'],
-  step: rawFlight['Nº Etapa'],
-  departure: {
-    airportCode: rawFlight['COD. Origem'],
-    airportName: rawFlight['ARPT Origem'],
-    time: rawFlight['Horário Partida'],
-  },
-  arrival: {
-    airportCode: rawFlight['COD. Destino'],
-    airportName: rawFlight['ARPT Destino'],
-    time: rawFlight['Horário Chegada'],
-  },
-  codeshare: rawFlight.CODESHARE,
-  alternativePlane: rawFlight['Equip. Alt?'],
-});
+const generateUniqueIdFrom = ({ number, companyCode, departure, arrival, codeshare }: Omit<Flight, 'id'>): string => {
+  return `${number}-${companyCode}-${departure.airportCode}-${arrival.airportCode}-${codeshare || Math.random()}`;
+};
+
+export const toFlight = (rawFlight: FlightRaw): Flight => {
+  const flight = {
+    companyCode: rawFlight['Cód.  Empresa'],
+    company: rawFlight.Empresa,
+    number: rawFlight['Nº VOO'],
+    planeModel: rawFlight['Equip.'],
+    monday: rawFlight.Seg,
+    tuesday: rawFlight.Ter,
+    wednesday: rawFlight.Qua,
+    thursday: rawFlight.Qui,
+    friday: rawFlight.Sex,
+    saturday: rawFlight.Sáb,
+    sunday: rawFlight.Dom,
+    numberOfSeats: rawFlight['Qtde Assentos'],
+    schedulePlan: {
+      code: rawFlight['Número Hotran'],
+      dateRequested: rawFlight['Data Solicitação'],
+      dateApproved: rawFlight['Data Aprovação'],
+      dateEffective: rawFlight['Data Vigência'],
+    },
+    operationType: rawFlight['Natureza Operação'],
+    step: rawFlight['Nº Etapa'],
+    departure: {
+      airportCode: rawFlight['COD. Origem'],
+      airportName: rawFlight['ARPT Origem'],
+      time: rawFlight['Horário Partida'],
+    },
+    arrival: {
+      airportCode: rawFlight['COD. Destino'],
+      airportName: rawFlight['ARPT Destino'],
+      time: rawFlight['Horário Chegada'],
+    },
+    codeshare: rawFlight.CODESHARE,
+    alternativePlane: rawFlight['Equip. Alt?'],
+  };
+
+  return {
+    id: generateUniqueIdFrom(flight),
+    ...flight,
+  };
+};
 
 export const toFlightRaw = (flight: Flight): FlightRaw => ({
   'Cód.  Empresa': flight.companyCode,

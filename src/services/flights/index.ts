@@ -1,4 +1,5 @@
-import requester from './requester';
+import * as service from './service';
 
 export * from './types';
-export default requester;
+
+export default service;

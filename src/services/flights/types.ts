@@ -60,6 +60,7 @@ interface Event {
 }
 
 export interface Flight {
+  id: string;
   companyCode: string;
   company: string;
   number: number;

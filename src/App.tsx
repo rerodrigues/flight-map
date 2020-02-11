@@ -5,7 +5,7 @@ import { ConnectedRouter } from 'connected-react-router';
 
 import store, { history } from './store';
 
-import { Airports } from './components';
+import { Flights, Airports } from './components';
 
 const App: React.FC = () => {
   return (
@@ -14,6 +14,8 @@ const App: React.FC = () => {
         <Switch>
           <Route exact path="/airports" component={Airports} />
           <Route exact path="/airports/country/:countryId" component={Airports} />
+          <Route exact path="/flights" component={Flights} />
+          <Route exact path="/flights/company/:companyCode" component={Flights} />
           <Route
             exact
             path="/"
@@ -30,6 +32,16 @@ const App: React.FC = () => {
                   </dd>
                   <dd>
                     <Link to="/airports/country/spain">Airports in Spain</Link>
+                  </dd>
+                  <dt>Flights</dt>
+                  <dd>
+                    <Link to="/flights/">All flights</Link>
+                  </dd>
+                  <dd>
+                    <Link to="/flights/company/aal">American Ariline flights</Link>
+                  </dd>
+                  <dd>
+                    <Link to="/flights/company/azu">Azul flights</Link>
                   </dd>
                 </dl>
               </>
