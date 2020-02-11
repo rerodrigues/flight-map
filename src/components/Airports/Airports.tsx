@@ -4,7 +4,7 @@ import { useDispatch, useSelector as useReduxSelector, TypedUseSelectorHook } fr
 import { useRouteMatch, Link } from 'react-router-dom';
 import { loadAirportsFetch } from './actions';
 import { Airport } from '../../services/airports';
-import { AppState } from '../../store';
+import { AppState, history } from '../../store';
 import { isRequestSuccess, RequestData } from '../../util';
 import { LoadAirportsParams } from './types';
 
@@ -23,7 +23,7 @@ const renderAirports = (airports: RequestData<Airport[]>): JSX.Element => (
         })
         .map((airport: Airport) => (
           <li key={airport.icao}>
-            {airport.country} - {airport.icao}
+            <Link to={`/airports/country/${airport.country}`}>{airport.country}</Link> - {airport.icao}
           </li>
         ))}
   </ul>
@@ -54,7 +54,9 @@ export const Airports: React.FC = () => {
 
   return (
     <>
-      <Link to="/">&lt; Back</Link>
+      <button type="button" onClick={history.goBack}>
+        &lt; Back
+      </button>
       {params.countryId && <h1>Airports in {params.countryId.toUpperCase()}</h1>}
       {!params.countryId && <h1>All Airports</h1>}
       {isRequestSuccess(airports) && renderAirports(airports)}

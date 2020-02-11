@@ -4,7 +4,7 @@ import { useDispatch, useSelector as useReduxSelector, TypedUseSelectorHook } fr
 import { useRouteMatch, Link } from 'react-router-dom';
 import { loadFlightsFetch } from './actions';
 import { Flight } from '../../services/flights/types';
-import { AppState } from '../../store';
+import { AppState, history } from '../../store';
 import { isRequestSuccess, RequestData } from '../../util';
 import { LoadFlightsParams } from './types';
 
@@ -24,7 +24,7 @@ const renderFlights = (flights: RequestData<Flight[]>): JSX.Element => (
         .map((flight: Flight) => (
           <li key={flight.id}>
             {flight.companyCode.toUpperCase()}
-            {flight.number} - {flight.company}
+            {flight.number} - <Link to={`/flights/company/${flight.companyCode}`}>{flight.company}</Link>
           </li>
         ))}
   </ul>
@@ -55,7 +55,9 @@ export const Flights: React.FC = () => {
 
   return (
     <>
-      <Link to="/">&lt; Back</Link>
+      <button type="button" onClick={history.goBack}>
+        &lt; Back
+      </button>
       {params.companyCode && <h1>Flights of company {params.companyCode.toUpperCase()}</h1>}
       {!params.companyCode && <h1>All Flights</h1>}
       {isRequestSuccess(flights) && renderFlights(flights)}
