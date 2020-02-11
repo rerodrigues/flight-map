@@ -5,10 +5,18 @@ import { airportsService } from '../../services';
 
 import { loadAirportsSuccess, loadAirportsError } from './actions';
 import { ActionTypes } from './actionTypes';
+import { LoadAirportsFetch } from './types';
 
-export function* loadAirportsSaga(): SagaIterator {
+export function* loadAirportsSaga(action: LoadAirportsFetch): SagaIterator {
   try {
-    const airports = yield call(airportsService.getAirports);
+    let airports;
+
+    if (action.payload && action.payload.countryId) {
+      airports = yield call(airportsService.getAirportsByCountry, action.payload.countryId);
+    } else {
+      airports = yield call(airportsService.getAirports);
+    }
+
     yield put(loadAirportsSuccess(airports));
   } catch (error) {
     console.log(error);

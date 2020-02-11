@@ -13,17 +13,25 @@ const App: React.FC = () => {
       <ConnectedRouter history={history}>
         <Switch>
           <Route exact path="/airports" component={Airports} />
+          <Route exact path="/airports/country/:countryId" component={Airports} />
           <Route
             exact
             path="/"
             render={() => (
               <>
                 <h1>Welcome</h1>
-                <ul>
-                  <li>
-                    <Link to="/airports">Airports</Link>
-                  </li>
-                </ul>
+                <dl>
+                  <dt>Airports</dt>
+                  <dd>
+                    <Link to="/airports">All airports</Link>
+                  </dd>
+                  <dd>
+                    <Link to="/airports/country/brazil">Airports in Brazil</Link>
+                  </dd>
+                  <dd>
+                    <Link to="/airports/country/spain">Airports in Spain</Link>
+                  </dd>
+                </dl>
               </>
             )}
           />

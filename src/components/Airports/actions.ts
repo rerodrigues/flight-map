@@ -1,9 +1,10 @@
 import { ActionTypes } from './actionTypes';
-import { Airport } from '../../services/airports';
-import { LoadAirportsSuccess, LoadAirportsFetch, LoadAirportsError } from './types';
+import { Airport } from '../../services/airports/types';
+import { LoadAirportsSuccess, LoadAirportsFetch, LoadAirportsError, LoadAirportsParams } from './types';
 
-export const loadAirportsFetch = (): LoadAirportsFetch => ({
+export const loadAirportsFetch = (params: LoadAirportsParams = {}): LoadAirportsFetch => ({
   type: ActionTypes.LOAD_AIRPORTS_FETCH,
+  payload: params,
 });
 
 export const loadAirportsSuccess = (data: Airport[]): LoadAirportsSuccess => ({
