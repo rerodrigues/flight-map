@@ -40,5 +40,7 @@ module.exports = {
     'react/jsx-one-expression-per-line': 'off',
     '@typescript-eslint/explicit-function-return-type': ['warn', { allowExpressions: true }],
     'no-console': 'off',
+    'react/state-in-constructor': ['error', 'never'],
+    'react/destructuring-assignment': 'off',
   },
 };
