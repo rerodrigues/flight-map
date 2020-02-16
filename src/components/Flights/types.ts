@@ -19,6 +19,7 @@ export interface LoadFlightsError {
 
 export interface LoadFlightsParams {
   companyCode?: string;
+  icaoCode?: string;
 }
 
 export type FlightsAction = LoadFlightsFetch | LoadFlightsSuccess | LoadFlightsError;

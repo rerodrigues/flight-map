@@ -23,7 +23,8 @@ const renderAirports = (airports: RequestData<Airport[]>): JSX.Element => (
         })
         .map((airport: Airport) => (
           <li key={airport.icao}>
-            <Link to={`/airports/country/${airport.country}`}>{airport.country}</Link> - {airport.icao}
+            <Link to={`/airports/country/${airport.country}`}>{airport.country}</Link> -{' '}
+            <Link to={`/flights/airport/${airport.icao}`}>{airport.icao}</Link>
           </li>
         ))}
   </ul>

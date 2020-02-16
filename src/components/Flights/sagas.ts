@@ -13,6 +13,8 @@ export function* loadFlightsSaga(action: LoadFlightsFetch): SagaIterator {
 
     if (action.payload && action.payload.companyCode) {
       fligths = yield call(flightsService.getFlightsByCompanyCode, action.payload.companyCode);
+    } else if (action.payload && action.payload.icaoCode) {
+      fligths = yield call(flightsService.getFlightsByIcaoCode, action.payload.icaoCode);
     } else {
       fligths = yield call(flightsService.getFlights);
     }

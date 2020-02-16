@@ -16,6 +16,7 @@ const App: React.FC = () => {
           <Route exact path="/airports/country/:countryId" component={Airports} />
           <Route exact path="/flights" component={Flights} />
           <Route exact path="/flights/company/:companyCode" component={Flights} />
+          <Route exact path="/flights/airport/:icaoCode" component={Flights} />
           <Route
             exact
             path="/"
@@ -42,6 +43,9 @@ const App: React.FC = () => {
                   </dd>
                   <dd>
                     <Link to="/flights/company/azu">Azul flights</Link>
+                  </dd>
+                  <dd>
+                    <Link to="/flights/airport/kmia">KMIA Airport Flights</Link>
                   </dd>
                 </dl>
               </>

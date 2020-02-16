@@ -11,3 +11,12 @@ export const getFlightsByCompanyCode = (companyCode: string): Promise<Flight[]> 
 
 export const getFlightByNumber = (number: number): Promise<Flight | undefined> =>
   flightRequester().then(flights => flights.find(flight => flight.number === number));
+
+export const getFlightsByIcaoCode = (icao: string): Promise<Flight[]> =>
+  flightRequester().then(flights =>
+    flights.filter(
+      ({ departure, arrival }) =>
+        departure.airportCode.toLowerCase() === icao.toLowerCase() ||
+        arrival.airportCode.toLowerCase() === icao.toLowerCase(),
+    ),
+  );
