@@ -1,4 +1,4 @@
-import { airportsReducer } from '../components/Airports/reducer';
+import airportsReducer from '../components/Airports/store';
 import { flightsReducer } from '../components/Flights/reducer';
 
 const reducers = {

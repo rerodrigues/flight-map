@@ -1,5 +1,5 @@
 import { ActionTypes } from './actionTypes';
-import { Airport } from '../../services/airports/types';
+import { Airport } from '../../../services/airports/types';
 import { LoadAirportsSuccess, LoadAirportsFetch, LoadAirportsError, LoadAirportsParams } from './types';
 
 export const loadAirportsFetch = (params: LoadAirportsParams = {}): LoadAirportsFetch => ({

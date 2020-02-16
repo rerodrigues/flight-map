@@ -1,17 +1,9 @@
 import { ActionTypes } from './actionTypes';
-import { Airport } from '../../services/airports';
 import { AirportsAction } from './types';
-import { RequestData, requestPristine, requestFetching, requestSuccess, requestError } from '../../util';
+import { requestFetching, requestSuccess, requestError } from '../../../util';
+import { AirportsState, airportsInitialState } from './state';
 
-export interface AirportsState {
-  airportsData: RequestData<Airport[]>;
-}
-
-const airportsInitialState: AirportsState = {
-  airportsData: requestPristine(),
-};
-
-export const airportsReducer = (state: AirportsState = airportsInitialState, action: AirportsAction): AirportsState => {
+const airportsReducer = (state: AirportsState = airportsInitialState, action: AirportsAction): AirportsState => {
   // if (!(action.type in ActionTypes)) {
   //   return state;
   // }
@@ -38,3 +30,5 @@ export const airportsReducer = (state: AirportsState = airportsInitialState, act
       return state;
   }
 };
+
+export default airportsReducer;

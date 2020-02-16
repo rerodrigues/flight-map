@@ -2,11 +2,10 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector as useReduxSelector, TypedUseSelectorHook } from 'react-redux';
 import { useRouteMatch, Link } from 'react-router-dom';
-import { loadAirportsFetch } from './actions';
+import { loadAirportsFetch, LoadAirportsParams } from './store';
 import { Airport } from '../../services/airports';
 import { AppState, history } from '../../store';
 import { isRequestSuccess, RequestData } from '../../util';
-import { LoadAirportsParams } from './types';
 
 const renderAirports = (airports: RequestData<Airport[]>): JSX.Element => (
   <ul>
