@@ -1,6 +1,6 @@
 import { ActionTypes } from './actionTypes';
-import { Flight } from '../../services/flights/types';
-import { RequestError } from '../../util';
+import { Flight } from '../../../services/flights/types';
+import { RequestError } from '../../../util';
 
 export interface LoadFlightsFetch {
   type: typeof ActionTypes.LOAD_FLIGHTS_FETCH;

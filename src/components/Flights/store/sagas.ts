@@ -1,7 +1,7 @@
 import { call, put, takeLatest, all } from 'redux-saga/effects';
 import { SagaIterator } from 'redux-saga';
 
-import { flightsService } from '../../services';
+import { flightsService } from '../../../services';
 
 import { loadFlightsSuccess, loadFlightsError } from './actions';
 import { ActionTypes } from './actionTypes';

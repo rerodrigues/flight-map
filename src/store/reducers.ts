@@ -1,5 +1,5 @@
 import airportsReducer from '../components/Airports/store';
-import { flightsReducer } from '../components/Flights/reducer';
+import flightsReducer from '../components/Flights/store';
 
 const reducers = {
   airports: airportsReducer,

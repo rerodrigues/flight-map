@@ -2,11 +2,10 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector as useReduxSelector, TypedUseSelectorHook } from 'react-redux';
 import { useRouteMatch, Link } from 'react-router-dom';
-import { loadFlightsFetch } from './actions';
+import { loadFlightsFetch, LoadFlightsParams } from './store';
 import { Flight } from '../../services/flights/types';
 import { AppState, history } from '../../store';
 import { isRequestSuccess, RequestData } from '../../util';
-import { LoadFlightsParams } from './types';
 
 const renderFlights = (flights: RequestData<Flight[]>): JSX.Element => (
   <ul>

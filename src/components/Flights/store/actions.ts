@@ -1,5 +1,5 @@
 import { ActionTypes } from './actionTypes';
-import { Flight } from '../../services/flights/types';
+import { Flight } from '../../../services/flights/types';
 import { LoadFlightsSuccess, LoadFlightsFetch, LoadFlightsError, LoadFlightsParams } from './types';
 
 export const loadFlightsFetch = (params: LoadFlightsParams = {}): LoadFlightsFetch => ({
