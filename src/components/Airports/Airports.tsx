@@ -9,7 +9,7 @@ import { AppState } from '../../store';
 import { isRequestSuccess } from '../../util';
 import { Airport } from '../../services/airports/types';
 import { TitleControl } from '../BaseMap';
-import { AirportMarker } from './components';
+import { AirportMarker, FlightRoutes } from './components';
 
 interface AirportsParams {
   params: LoadAirportsParams;
@@ -33,6 +33,7 @@ export const Airports: React.FC = () => {
   }, [dispatch, params.countryId]);
 
   const airports = useSelector(state => state.airports.airportsData);
+  const flights = useSelector(state => state.flights.flightsData);
 
   return (
     <BaseMap>
@@ -41,6 +42,10 @@ export const Airports: React.FC = () => {
 
       {isRequestSuccess(airports) &&
         airports.data.map((airport: Airport) => <AirportMarker airport={airport} key={airport.icao} />)}
+
+      {isRequestSuccess(airports) && isRequestSuccess(flights) && (
+        <FlightRoutes airports={airports.data} flights={flights.data} />
+      )}
     </BaseMap>
   );
 };
