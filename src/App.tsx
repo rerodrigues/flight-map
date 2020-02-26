@@ -1,59 +1,31 @@
-import React from 'react';
-import { Provider } from 'react-redux';
-import { Route, Switch, Link } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
 
-import store, { history } from './store';
+import { useSelector, isRequestSuccess } from './util';
+import { loadFlightsFetch } from './components/Flights';
+import { loadAirportsFetch } from './components/Airports';
+import { Loading, Routes } from './components/Home';
 
-import { Flights, Airports } from './components';
+import { history } from './store';
 
 const App: React.FC = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(loadAirportsFetch());
+    dispatch(loadFlightsFetch());
+  }, [dispatch]);
+
+  const airportsData = useSelector(state => state.airports.airportsData);
+  const flightsData = useSelector(state => state.flights.flightsData);
+  const isDataLoading = !isRequestSuccess(airportsData) || !isRequestSuccess(flightsData);
+
   return (
-    <Provider store={store}>
-      <ConnectedRouter history={history}>
-        <Switch>
-          <Route exact path="/airports" component={Airports} />
-          <Route exact path="/airports/country/:countryId" component={Airports} />
-          <Route exact path="/flights" component={Flights} />
-          <Route exact path="/flights/company/:companyCode" component={Flights} />
-          <Route exact path="/flights/airport/:icaoCode" component={Flights} />
-          <Route
-            exact
-            path="/"
-            render={() => (
-              <>
-                <h1>Welcome</h1>
-                <dl>
-                  <dt>Airports</dt>
-                  <dd>
-                    <Link to="/airports">All airports</Link>
-                  </dd>
-                  <dd>
-                    <Link to="/airports/country/brazil">Airports in Brazil</Link>
-                  </dd>
-                  <dd>
-                    <Link to="/airports/country/spain">Airports in Spain</Link>
-                  </dd>
-                  <dt>Flights</dt>
-                  <dd>
-                    <Link to="/flights/">All flights</Link>
-                  </dd>
-                  <dd>
-                    <Link to="/flights/company/aal">American Ariline flights</Link>
-                  </dd>
-                  <dd>
-                    <Link to="/flights/company/azu">Azul flights</Link>
-                  </dd>
-                  <dd>
-                    <Link to="/flights/airport/kmia">KMIA Airport Flights</Link>
-                  </dd>
-                </dl>
-              </>
-            )}
-          />
-        </Switch>
-      </ConnectedRouter>
-    </Provider>
+    <ConnectedRouter history={history}>
+      {isDataLoading && <Loading />}
+      {!isDataLoading && <Routes />}
+    </ConnectedRouter>
   );
 };
 
