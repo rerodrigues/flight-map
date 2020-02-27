@@ -3,11 +3,18 @@ import { SagaIterator } from 'redux-saga';
 
 import { airportsService } from '../../../services';
 
-import { loadAirportsSuccess, loadAirportsError } from './actions';
+import {
+  loadAirportsSuccess,
+  loadAirportsError,
+  filterAirportsSuccess,
+  loadAirportsFetch,
+  filterAirportsError,
+} from './actions';
 import { ActionTypes } from './actionTypes';
 import { LoadAirportsFetch } from './types';
 import { selectFlighsData, loadFlightsFetch } from '../../Flights/store';
 import { isRequestSuccess } from '../../../util';
+import { selectAirportsData } from './selectors';
 
 export function* loadAirportsSaga(action: LoadAirportsFetch): SagaIterator {
   try {
@@ -31,6 +38,30 @@ export function* loadAirportsSaga(action: LoadAirportsFetch): SagaIterator {
   }
 }
 
+export function* filterAirportsSaga(action: FilterAirportsStart): SagaIterator {
+  try {
+    const airportsData = yield select(selectAirportsData);
+    if (!isRequestSuccess(airportsData)) {
+      yield put(loadAirportsFetch());
+    }
+
+    let airports = yield select(selectAirportsData);
+
+    if (action.payload && action.payload.countryId) {
+      airports = yield call(airportsService.filterAirportsByCountry, airports.data, action.payload.countryId);
+      yield put(filterAirportsSuccess(airports));
+    } else {
+      yield put(filterAirportsSuccess(airports.data));
+    }
+  } catch (error) {
+    console.log(error);
+    yield put(filterAirportsError(error.mesage, error.statusCode));
+  }
+}
+
 export function* AirportsSagas(): SagaIterator {
-  yield all([takeLatest(ActionTypes.LOAD_AIRPORTS_FETCH, loadAirportsSaga)]);
+  yield all([
+    takeLatest(ActionTypes.LOAD_AIRPORTS_FETCH, loadAirportsSaga),
+    takeLatest(ActionTypes.FILTER_AIRPORTS_START, filterAirportsSaga),
+  ]);
 }

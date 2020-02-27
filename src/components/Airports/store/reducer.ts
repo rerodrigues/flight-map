@@ -26,6 +26,11 @@ const airportsReducer = (state: AirportsState = airportsInitialState, action: Ai
         airportsData: requestError(message, code),
       };
     }
+    case ActionTypes.FILTER_AIRPORTS_SUCCESS:
+      return {
+        ...state,
+        filteredAirportData: action.payload,
+      };
     default:
       return state;
   }

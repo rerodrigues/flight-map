@@ -14,3 +14,6 @@ export const getAirportByIata = (iata: string): Promise<Airport | undefined> =>
 
 export const getAirportByIcao = (icao: string): Promise<Airport | undefined> =>
   airportRequester().then(airports => airports.find(airport => airport.icao.toLowerCase() === icao.toLowerCase()));
+
+export const filterAirportsByCountry = (airports: Airport[], country: string): Airport[] =>
+  airports.filter(airport => airport.country.toLowerCase() === country.toLowerCase());
