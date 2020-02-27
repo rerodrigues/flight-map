@@ -1,11 +1,11 @@
 /* eslint-disable import/prefer-default-export */
 import React, { useEffect } from 'react';
-import { useDispatch, useSelector as useReduxSelector, TypedUseSelectorHook } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useRouteMatch, Link } from 'react-router-dom';
 import { loadFlightsFetch, LoadFlightsParams } from './store';
 import { Flight } from '../../services/flights/types';
-import { AppState, history } from '../../store';
-import { isRequestSuccess, RequestData } from '../../util';
+import { history } from '../../store';
+import { useSelector, isRequestSuccess, RequestData } from '../../util';
 
 const renderFlights = (flights: RequestData<Flight[]>): JSX.Element => (
   <ul>
@@ -38,7 +38,6 @@ interface FlightsParams {
 
 export const Flights: React.FC = () => {
   const dispatch = useDispatch();
-  const useSelector: TypedUseSelectorHook<AppState> = useReduxSelector;
   const { params }: FlightsParams = useRouteMatch();
 
   useEffect(() => {

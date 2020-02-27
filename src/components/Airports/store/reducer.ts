@@ -31,6 +31,11 @@ const airportsReducer = (state: AirportsState = airportsInitialState, action: Ai
         ...state,
         filteredAirportData: action.payload,
       };
+    case ActionTypes.FILTER_AIRPORTS_ERROR:
+      return {
+        ...state,
+        filteredAirportData: [],
+      };
     default:
       return state;
   }

@@ -1,12 +1,10 @@
-/* eslint-disable import/prefer-default-export */
 import React, { useEffect } from 'react';
-import { useDispatch, useSelector as useReduxSelector, TypedUseSelectorHook } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useRouteMatch } from 'react-router-dom';
 
 import BaseMap from '../BaseMap/Map';
 import { filterAirportsStart, AirportsParams } from './store';
-import { AppState } from '../../store';
-import { isRequestSuccess } from '../../util';
+import { useSelector, isRequestSuccess } from '../../util';
 import { Airport } from '../../services/airports/types';
 import { TitleControl } from '../BaseMap';
 import { AirportMarker, FlightRoutes } from './components';
@@ -15,21 +13,16 @@ interface LoadAirportsParams {
   params: AirportsParams;
 }
 
-export const Airports: React.FC = () => {
+export interface AirportsProps {
+  selected: Airport | null;
+}
+
+export const Airports: React.FC<AirportsProps> = ({ selected }: AirportsProps) => {
   const dispatch = useDispatch();
-  const useSelector: TypedUseSelectorHook<AppState> = useReduxSelector;
   const { params }: LoadAirportsParams = useRouteMatch();
 
   useEffect(() => {
-    try {
-      if (params.countryId) {
-        dispatch(filterAirportsStart({ countryId: params.countryId }));
-      } else {
-        dispatch(filterAirportsStart());
-      }
-    } catch (e) {
-      console.log(e);
-    }
+    dispatch(filterAirportsStart({ countryId: params.countryId }));
   }, [dispatch, params.countryId]);
 
   const airports = useSelector(state => state.airports.filteredAirportData);
@@ -41,10 +34,16 @@ export const Airports: React.FC = () => {
       {!params.countryId && <TitleControl title="All Airports" />}
 
       {airports.map((airport: Airport) => (
-        <AirportMarker airport={airport} key={airport.icao} />
+        <AirportMarker
+          airport={airport}
+          key={airport.icao}
+          selected={selected !== null && selected.icao.toLowerCase() === airport.icao.toLowerCase()}
+        />
       ))}
 
-      {isRequestSuccess(flights) && <FlightRoutes airports={airports} flights={flights.data} />}
+      {selected && isRequestSuccess(flights) && (
+        <FlightRoutes airports={airports} flights={flights.data} selected={selected} />
+      )}
     </BaseMap>
   );
 };

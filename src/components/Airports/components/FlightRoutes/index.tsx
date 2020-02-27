@@ -8,9 +8,10 @@ import { Flight } from '../../../../services/flights/types';
 interface FlightRouteProps {
   flights: Flight[];
   airports: Airport[];
+  selected?: Airport;
 }
 
-export const FlightRoute: React.FC<FlightRouteProps> = ({ flights, airports }: FlightRouteProps) => {
+const FlightRoute: React.FC<FlightRouteProps> = ({ flights, airports, selected }: FlightRouteProps) => {
   const getAirportPosition = (icao: string): LatLngTuple | null => {
     const foundAiport = airports.find(airport => airport.icao === icao);
 
@@ -27,7 +28,15 @@ export const FlightRoute: React.FC<FlightRouteProps> = ({ flights, airports }: F
   const getUniqueRoutes = (): Map<string, LatLngTuple[]> => {
     const uniqueRoutes = new Map();
 
-    flights.forEach(flight => {
+    const filteredFlights = !selected
+      ? flights
+      : flights.filter(({ departure, arrival }) =>
+          [departure.airportCode.toLowerCase(), arrival.airportCode.toLowerCase()].includes(
+            selected.icao.toLowerCase(),
+          ),
+        );
+
+    filteredFlights.forEach(flight => {
       const departureCode = flight.departure.airportCode;
       const arrivalCode = flight.arrival.airportCode;
       const uniqueId = [departureCode, arrivalCode].sort().join('-');
@@ -36,7 +45,6 @@ export const FlightRoute: React.FC<FlightRouteProps> = ({ flights, airports }: F
         uniqueRoutes.set(uniqueId, getPositions([departureCode, arrivalCode]));
       }
     });
-
     return uniqueRoutes;
   };
 
@@ -46,7 +54,7 @@ export const FlightRoute: React.FC<FlightRouteProps> = ({ flights, airports }: F
         Array.from(getUniqueRoutes())
           .filter(route => route[1])
           .map(([key, position]) => (
-            <Polyline positions={position} key={key} color="#ccc" weight={1} opacity={0.5} dashArray={[4, 1]} />
+            <Polyline positions={position} key={key} color="#666" weight={1} opacity={0.5} dashArray={[4, 4, 4]} />
           ))}
     </>
   );

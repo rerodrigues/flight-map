@@ -7,7 +7,7 @@ interface AirportPopupProps {
   airport: Airport;
 }
 
-export const AirportPopup: React.FC<AirportPopupProps> = ({ airport }: AirportPopupProps) => (
+const AirportPopup: React.FC<AirportPopupProps> = ({ airport }: AirportPopupProps) => (
   <Popup>
     <h3>Airport: {airport.name}</h3>
     <h4>
