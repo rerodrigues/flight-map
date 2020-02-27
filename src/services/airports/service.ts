@@ -8,7 +8,7 @@ export const filterAirportsByCountry = (airports: Airport[], country: string): A
   airports.filter(airport => airport.country.toLowerCase() === country.toLowerCase());
 
 export const findAirportByIata = (airports: Airport[], iata: string): Airport | undefined =>
-  airports.find(airport => airport.iata.toLowerCase() === iata.toLowerCase());
+  airports.find(airport => airport.iata && airport.iata.toLowerCase() === iata.toLowerCase());
 
 export const findAirportByIcao = (airports: Airport[], icao: string): Airport | undefined =>
-  airports.find(airport => airport.icao.toLowerCase() === icao.toLowerCase());
+  airports.find(airport => airport.icao && airport.icao.toLowerCase() === icao.toLowerCase());

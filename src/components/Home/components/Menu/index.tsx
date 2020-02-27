@@ -13,6 +13,9 @@ const Menu: React.FC = () => (
     <dd>
       <Link to="/airports/country/spain">Airports in Spain</Link>
     </dd>
+    <dd>
+      <Link to="/airport/sbbr">SBBR Airport Flights</Link>
+    </dd>
     <dt>Flights</dt>
     <dd>
       <Link to="/flights/">All flights</Link>
