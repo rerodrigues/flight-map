@@ -9,6 +9,8 @@ import { Loading, Routes } from './components/Home';
 
 import { history } from './store';
 
+import './App.css';
+
 const App: React.FC = () => {
   const dispatch = useDispatch();
 
