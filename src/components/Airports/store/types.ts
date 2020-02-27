@@ -4,7 +4,6 @@ import { RequestError } from '../../../util';
 
 export interface LoadAirportsFetch {
   type: typeof ActionTypes.LOAD_AIRPORTS_FETCH;
-  payload: AirportsParams;
 }
 
 export interface LoadAirportsSuccess {

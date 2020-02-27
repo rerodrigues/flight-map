@@ -10,9 +10,8 @@ import {
   FilterAirportsError,
 } from './types';
 
-export const loadAirportsFetch = (params: AirportsParams = {}): LoadAirportsFetch => ({
+export const loadAirportsFetch = (): LoadAirportsFetch => ({
   type: ActionTypes.LOAD_AIRPORTS_FETCH,
-  payload: params,
 });
 
 export const loadAirportsSuccess = (data: Airport[]): LoadAirportsSuccess => ({

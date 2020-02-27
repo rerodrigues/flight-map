@@ -11,22 +11,16 @@ import {
   filterAirportsError,
 } from './actions';
 import { ActionTypes } from './actionTypes';
-import { LoadAirportsFetch } from './types';
+import { FilterAirportsStart } from './types';
 import { selectFlighsData, loadFlightsFetch } from '../../Flights/store';
 import { isRequestSuccess } from '../../../util';
 import { selectAirportsData } from './selectors';
 
-export function* loadAirportsSaga(action: LoadAirportsFetch): SagaIterator {
+export function* loadAirportsSaga(): SagaIterator {
   try {
-    let airports;
-
-    if (action.payload && action.payload.countryId) {
-      airports = yield call(airportsService.getAirportsByCountry, action.payload.countryId);
-    } else {
-      airports = yield call(airportsService.getAirports);
-    }
-
+    const airports = yield call(airportsService.getAirports);
     const flights = yield select(selectFlighsData);
+
     if (!isRequestSuccess(flights)) {
       yield put(loadFlightsFetch());
     }

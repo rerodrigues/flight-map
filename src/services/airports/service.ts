@@ -4,16 +4,11 @@ import { Airport } from './types';
 
 export const getAirports = airportRequester;
 
-export const getAirportsByCountry = (country: string): Promise<Airport[]> =>
-  airportRequester().then(airports =>
-    airports.filter(airport => airport.country.toLowerCase() === country.toLowerCase()),
-  );
-
-export const getAirportByIata = (iata: string): Promise<Airport | undefined> =>
-  airportRequester().then(airports => airports.find(airport => airport.iata.toLowerCase() === iata.toLowerCase()));
-
-export const getAirportByIcao = (icao: string): Promise<Airport | undefined> =>
-  airportRequester().then(airports => airports.find(airport => airport.icao.toLowerCase() === icao.toLowerCase()));
-
 export const filterAirportsByCountry = (airports: Airport[], country: string): Airport[] =>
   airports.filter(airport => airport.country.toLowerCase() === country.toLowerCase());
+
+export const findAirportByIata = (airports: Airport[], iata: string): Airport | undefined =>
+  airports.find(airport => airport.iata.toLowerCase() === iata.toLowerCase());
+
+export const findAirportByIcao = (airports: Airport[], icao: string): Airport | undefined =>
+  airports.find(airport => airport.icao.toLowerCase() === icao.toLowerCase());
