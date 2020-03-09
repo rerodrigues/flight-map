@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useRouteMatch } from 'react-router-dom';
 
+import { LayerGroup } from 'react-leaflet';
 import BaseMap from '../BaseMap/Map';
 import { filterAirportsStart, AirportsParams } from './store';
 import { useSelector, isRequestSuccess } from '../../util';
@@ -16,7 +17,7 @@ interface LoadAirportsParams {
 }
 
 export interface AirportsProps {
-  selected: Airport | null;
+  selected?: Airport;
 }
 
 const handleMarkerClick = (airport: Airport): void => {

@@ -8,7 +8,7 @@ import { Airport } from '../../../../services/airports/types';
 
 interface AirportMarkerProps {
   airport: Airport;
-  selected: boolean | null;
+  selected?: boolean;
   onClick?: (airport: Airport) => void;
 }
 
