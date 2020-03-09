@@ -10,7 +10,6 @@ import { Airport } from '../../services/airports/types';
 import { TitleControl } from '../BaseMap';
 import { AirportMarker, FlightRoutes } from './components';
 import { history } from '../../store';
-import { LayerGroup } from 'react-leaflet';
 
 interface LoadAirportsParams {
   params: AirportsParams;

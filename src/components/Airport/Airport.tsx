@@ -23,7 +23,7 @@ export const Airport: React.FC = () => {
 
   return (
     <section className="airport">
-      <Airports selected={selectedAirport} />
+      <Airports selected={selectedAirport || undefined} />
       {selectedAirport && (
         <section className="airport__details">
           <h1>{selectedAirport.name}</h1>
