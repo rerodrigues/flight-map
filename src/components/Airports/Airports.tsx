@@ -8,6 +8,8 @@ import { useSelector, isRequestSuccess } from '../../util';
 import { Airport } from '../../services/airports/types';
 import { TitleControl } from '../BaseMap';
 import { AirportMarker, FlightRoutes } from './components';
+import { history } from '../../store';
+import { LayerGroup } from 'react-leaflet';
 
 interface LoadAirportsParams {
   params: AirportsParams;
@@ -16,6 +18,10 @@ interface LoadAirportsParams {
 export interface AirportsProps {
   selected: Airport | null;
 }
+
+const handleMarkerClick = (airport: Airport): void => {
+  history.push(`/airport/${airport.icao.toLowerCase()}`);
+};
 
 export const Airports: React.FC<AirportsProps> = ({ selected }: AirportsProps) => {
   const dispatch = useDispatch();
@@ -31,19 +37,23 @@ export const Airports: React.FC<AirportsProps> = ({ selected }: AirportsProps) =
   return (
     <BaseMap>
       {params.countryId && <TitleControl title={`Airports in ${params.countryId.toUpperCase()}`} />}
-      {!params.countryId && <TitleControl title="All Airports" />}
 
-      {airports.map((airport: Airport) => (
-        <AirportMarker
-          airport={airport}
-          key={airport.icao}
-          selected={selected !== null && selected.icao.toLowerCase() === airport.icao.toLowerCase()}
-        />
-      ))}
+      <LayerGroup>
+        {airports.map((airport: Airport) => (
+          <AirportMarker
+            airport={airport}
+            key={airport.icao}
+            selected={selected && selected.icao.toLowerCase() === airport.icao.toLowerCase()}
+            onClick={handleMarkerClick}
+          />
+        ))}
+      </LayerGroup>
 
-      {selected && isRequestSuccess(flights) && (
-        <FlightRoutes airports={airports} flights={flights.data} selected={selected} />
-      )}
+      <LayerGroup>
+        {selected && isRequestSuccess(flights) && (
+          <FlightRoutes airports={airports} flights={flights.data} selected={selected} />
+        )}
+      </LayerGroup>
     </BaseMap>
   );
 };
