@@ -1,10 +1,15 @@
+/* eslint-disable @typescript-eslint/ban-ts-ignore */
 import React from 'react';
-import { Polyline } from 'react-leaflet';
+import { withLeaflet } from 'react-leaflet';
+// @ts-ignore
+import { Curve } from 'react-leaflet-curve';
 
 import { LatLngTuple } from 'leaflet';
 import { Airport } from '../../../../services/airports/types';
 import { Flight } from '../../../../services/flights/types';
+import { curvedPath } from '../../../../util';
 
+const WrappedCurve = withLeaflet(Curve);
 interface FlightRouteProps {
   flights: Flight[];
   airports: Airport[];
@@ -53,9 +58,13 @@ const FlightRoute: React.FC<FlightRouteProps> = ({ flights, airports, selected }
       {airports.length &&
         Array.from(getUniqueRoutes())
           .filter(route => route[1])
-          .map(([key, position]) => (
-            <Polyline positions={position} key={key} color="#666" weight={1} opacity={0.5} dashArray={[4, 4, 4]} />
-          ))}
+          .map(([key, [departureCoords, arrivalCoords]]) => {
+            const [M, Q, endPoint] = curvedPath(departureCoords, arrivalCoords);
+            const positions = ['M', M, 'Q', Q, endPoint];
+            const options = { color: '#666', weight: 1, opacity: 0.5, dashArray: [4, 4, 4] };
+            // @ts-ignore
+            return <WrappedCurve positions={positions} key={key} option={options} />;
+          })}
     </>
   );
 };
