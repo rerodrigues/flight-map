@@ -1,8 +1,10 @@
 import { Icon } from 'leaflet';
 
 const AirportIcon = new Icon({
-  iconUrl: '/img/tower.svg',
+  iconUrl: '/img/tower.png',
   iconSize: [36, 36],
+  iconAnchor: [18, 36],
+  popupAnchor: [0, -74],
 });
 
 export default AirportIcon;

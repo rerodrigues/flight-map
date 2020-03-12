@@ -61,7 +61,7 @@ const FlightRoute: React.FC<FlightRouteProps> = ({ flights, airports, selected }
           .map(([key, [departureCoords, arrivalCoords]]) => {
             const [M, Q, endPoint] = curvedPath(departureCoords, arrivalCoords);
             const positions = ['M', M, 'Q', Q, endPoint];
-            const options = { color: '#666', weight: 1, opacity: 0.5, dashArray: [4, 4, 4] };
+            const options = { color: '#ae044d', weight: 2, opacity: 0.6, dashArray: [3, 6] };
             // @ts-ignore
             return <WrappedCurve positions={positions} key={key} option={options} />;
           })}

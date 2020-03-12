@@ -4,8 +4,8 @@ import { history } from '../../../../store';
 
 const BackControl: React.FC = () => (
   <Control position="topleft">
-    <button type="button" onClick={history.goBack}>
-      &lt;
+    <button type="button" onClick={history.goBack} title="Back">
+      🠸
     </button>
   </Control>
 );
