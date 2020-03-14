@@ -1,5 +1,6 @@
 /* eslint-disable import/prefer-default-export */
 import React, { useEffect } from 'react';
+import { Grid, Drawer } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
 import { useRouteMatch } from 'react-router-dom';
 
@@ -22,13 +23,13 @@ export const Airport: React.FC = () => {
   const selectedAirport = useSelector(state => state.airport.selectedAirport);
 
   return (
-    <section className="airport">
+    <Grid container direction="row" justify="space-between" alignItems="stretch" className="airport">
       <Airports selected={selectedAirport || undefined} />
       {selectedAirport && (
-        <section className="airport__details">
+        <Drawer className="airport__details" variant="permanent" anchor="right">
           <h1>{selectedAirport.name}</h1>
-        </section>
+        </Drawer>
       )}
-    </section>
+    </Grid>
   );
 };
