@@ -15,7 +15,7 @@ interface LoadAirportsParams {
   params: AirportsParams;
 }
 
-export interface AirportsProps {
+export interface AirportsProps extends React.HTMLAttributes<HTMLElement> {
   selected?: Airport;
 }
 

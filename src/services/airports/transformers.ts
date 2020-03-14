@@ -28,17 +28,17 @@ export const toAirport = (rawAirport: AirportRaw): Airport => {
   };
 };
 
-export const toAirportRaw = (airport: Airport): AirportRaw => {
-  const createNameFromInfo = (apt: Airport): string => {
-    if (apt.city && apt.state) {
-      return `${apt.city}/${apt.name}, ${apt.state}`;
-    }
-    if (apt.city) {
-      return `${apt.city}/${apt.name}`;
-    }
-    return apt.name;
-  };
+export const createNameFromInfo = (airport: Airport): string => {
+  if (airport.city && airport.state) {
+    return `${airport.city}/${airport.state}, ${airport.country}`;
+  }
+  if (airport.city) {
+    return `${airport.city}/${airport.country}`;
+  }
+  return airport.country;
+};
 
+export const toAirportRaw = (airport: Airport): AirportRaw => {
   const fullName = createNameFromInfo(airport);
 
   return {
