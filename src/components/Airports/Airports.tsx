@@ -1,15 +1,16 @@
 import React, { useEffect } from 'react';
+import { LayerGroup } from 'react-leaflet';
 import { useDispatch } from 'react-redux';
 import { useRouteMatch } from 'react-router-dom';
 
-import { LayerGroup } from 'react-leaflet';
 import BaseMap from '../BaseMap/Map';
-import { filterAirportsStart, AirportsParams } from './store';
-import { useSelector, isRequestSuccess } from '../../util';
 import { Airport } from '../../services/airports/types';
-import { TitleControl } from '../BaseMap';
 import { AirportMarker, FlightRoutes } from './components';
+import { AirportsParams, filterAirportsStart } from './store';
+import { TitleControl } from '../BaseMap';
+import { filterFlightsStart } from '../Flights';
 import { history } from '../../store';
+import { useSelector } from '../../util';
 
 interface LoadAirportsParams {
   params: AirportsParams;
@@ -29,10 +30,11 @@ export const Airports: React.FC<AirportsProps> = ({ selected }: AirportsProps) =
 
   useEffect(() => {
     dispatch(filterAirportsStart({ countryId: params.countryId }));
+    dispatch(filterFlightsStart());
   }, [dispatch, params.countryId]);
 
   const airports = useSelector(state => state.airports.filteredAirportData);
-  const flights = useSelector(state => state.flights.flightsData);
+  const flights = useSelector(state => state.flights.filteredFlightsData);
 
   return (
     <BaseMap>
@@ -50,10 +52,10 @@ export const Airports: React.FC<AirportsProps> = ({ selected }: AirportsProps) =
       </LayerGroup>
 
       <LayerGroup>
-        {selected && isRequestSuccess(flights) && (
-          <FlightRoutes airports={airports} flights={flights.data} selected={selected} />
-        )}
+        {selected && flights && <FlightRoutes airports={airports} flights={flights} selected={selected} />}
       </LayerGroup>
     </BaseMap>
   );
 };
+
+export default Airports;
