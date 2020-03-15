@@ -12,14 +12,14 @@ import {
 } from './actions';
 import { ActionTypes } from './actionTypes';
 import { FilterAirportsStart } from './types';
-import { selectFlighsData, loadFlightsFetch } from '../../Flights/store';
+import { selectFlightsData, loadFlightsFetch } from '../../Flights/store';
 import { isRequestSuccess } from '../../../util';
 import { selectAirportsData } from './selectors';
 
 export function* loadAirportsSaga(): SagaIterator {
   try {
     const airports = yield call(airportsService.getAirports);
-    const flights = yield select(selectFlighsData);
+    const flights = yield select(selectFlightsData);
 
     if (!isRequestSuccess(flights)) {
       yield put(loadFlightsFetch());

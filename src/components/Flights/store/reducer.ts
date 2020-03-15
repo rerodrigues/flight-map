@@ -1,7 +1,7 @@
 import { ActionTypes } from './actionTypes';
 import { FlightsAction } from './types';
-import { requestFetching, requestSuccess, requestError } from '../../../util';
 import { FlightsState, flightsInitialState } from './state';
+import { requestError, requestFetching, requestSuccess } from '../../../util';
 
 const flightsReducer = (state: FlightsState = flightsInitialState, action: FlightsAction): FlightsState => {
   // if (!(action.type in ActionTypes)) {
@@ -26,6 +26,17 @@ const flightsReducer = (state: FlightsState = flightsInitialState, action: Fligh
         flightsData: requestError(message, code),
       };
     }
+    case ActionTypes.FILTER_FLIGHTS_START:
+    case ActionTypes.FILTER_FLIGHTS_ERROR:
+      return {
+        ...state,
+        filteredFlightsData: [],
+      };
+    case ActionTypes.FILTER_FLIGHTS_SUCCESS:
+      return {
+        ...state,
+        filteredFlightsData: action.payload,
+      };
     default:
       return state;
   }
