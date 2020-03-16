@@ -6,6 +6,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import React from 'react';
 
 import { Flight } from '../../../../../../services/flights';
+import { formatFlightCode } from '../DetailsPanes';
 
 interface DeparturesPaneProps {
   flights: Flight[];
@@ -23,7 +24,10 @@ export const DeparturesPane: React.FC<DeparturesPaneProps> = ({ flights }: Depar
           <ListItemIcon>
             <ArrowForwardIcon />
           </ListItemIcon>
-          <ListItemText primary={flight.arrival.airportName} />
+          <ListItemText
+            primary={flight.arrival.airportName}
+            secondary={`${formatFlightCode(flight).join(', ')} - ${flight.company}`}
+          />
         </ListItem>
       ))}
     </List>

@@ -15,6 +15,16 @@ export interface DetailsPaneProps {
   airport: Airport;
 }
 
+export const formatFlightCode = (flight: Flight): string[] => {
+  const flightCode = `${flight.companyCode.toUpperCase()}${flight.number}`;
+  if (flight.codeshare) {
+    const codeshares = flight.codeshare.split(' - ');
+    codeshares.unshift(flightCode);
+    return codeshares.map((codeshare: string) => codeshare.replace('/', ''));
+  }
+  return [flightCode];
+};
+
 const getUniqueFligths = (flights: Flight[]): Map<string, Flight> => {
   const uniqueFlights = new Map();
 
