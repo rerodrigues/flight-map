@@ -1,13 +1,13 @@
 /* eslint-disable import/prefer-default-export */
 import React, { useEffect } from 'react';
-import { Grid, Paper, makeStyles, Card, CardContent, Typography } from '@material-ui/core';
+import { Grid, Paper, makeStyles } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
 import { useRouteMatch } from 'react-router-dom';
 
+import { AirportParams, findAirport } from '.';
 import { Airports } from '../Airports';
-import { findAirport, AirportParams } from '.';
+import { DetailsCard } from './components';
 import { useSelector } from '../../util';
-import { createNameFromInfo } from '../../services/airports';
 
 interface LoadAirportParams {
   params: AirportParams;
@@ -38,18 +38,11 @@ export const Airport: React.FC = () => {
       </Grid>
       {selectedAirport && (
         <Grid item xs={12} sm={8} md={3} component={Paper} elevation={6} square zeroMinWidth>
-          <Card className={classes.root}>
-            <CardContent>
-              <Typography gutterBottom variant="h5" component="h2">
-                {selectedAirport.name}
-              </Typography>
-              <Typography gutterBottom variant="body2" component="p">
-                {createNameFromInfo(selectedAirport)}
-              </Typography>
-            </CardContent>
-          </Card>
+          <DetailsCard airport={selectedAirport} />
         </Grid>
       )}
     </Grid>
   );
 };
+
+export default Airport;
