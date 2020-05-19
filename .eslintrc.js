@@ -39,5 +39,9 @@ module.exports = {
     'import/no-extraneous-dependencies': ["error", { devDependencies: ['**/{test,spec}.tsx?'] }],
     'react/jsx-one-expression-per-line': 'off',
     '@typescript-eslint/explicit-function-return-type': ['warn', { allowExpressions: true }],
+    'no-console': 'off',
+    'react/state-in-constructor': ['error', 'never'],
+    'react/destructuring-assignment': 'off',
+    'import/no-cycle': 'off' // FIXME: Should resolve dependency cicle in when acessing store/state
   },
 };

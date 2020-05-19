@@ -5,7 +5,7 @@ import { connectRouter, routerMiddleware } from 'connected-react-router';
 import { createBrowserHistory } from 'history';
 
 import reducers from './reducers';
-// import sagas from './sagas';
+import sagas from './sagas';
 
 const composeEnhancers = composeWithDevTools({});
 
@@ -20,8 +20,10 @@ const rootReducers = combineReducers({
   router: connectRouter(history),
 });
 
-// sagas.forEach(sagaMiddleware.run);
+const store = createStore(rootReducers, composeEnhancers(middlewares));
+
+sagas.forEach(sagaMiddleware.run);
 
 export type AppState = ReturnType<typeof rootReducers>;
 
-export default createStore(rootReducers, composeEnhancers(middlewares));
+export default store;
