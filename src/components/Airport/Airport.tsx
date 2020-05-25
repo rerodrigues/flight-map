@@ -4,7 +4,7 @@ import { Grid, Paper, makeStyles } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
 import { useRouteMatch } from 'react-router-dom';
 
-import { AirportParams, findAirport } from '.';
+import { AirportParams, findAirport, selectSelectedAirport } from '.';
 import { Airports } from '../Airports';
 import { DetailsCard } from './components';
 import { useSelector } from '../../util';
@@ -27,7 +27,7 @@ export const Airport: React.FC = () => {
     dispatch(findAirport({ icao: params.icao }));
   }, [dispatch, params.icao]);
 
-  const selectedAirport = useSelector(state => state.airport.selectedAirport);
+  const selectedAirport = useSelector(selectSelectedAirport);
 
   const classes = useStyles();
 

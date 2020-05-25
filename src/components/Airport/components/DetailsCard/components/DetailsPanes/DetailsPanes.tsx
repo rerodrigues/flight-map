@@ -6,7 +6,7 @@ import DeparturesPane from '../DeparturesPane';
 import { Airport } from '../../../../../../services/airports';
 import { DetailTabs } from '../../DetailsCard';
 import { Flight } from '../../../../../../services/flights';
-import { filterFlightsStart } from '../../../../../Flights';
+import { filterFlightsStart, selectFilteredFlightsData } from '../../../../../Flights';
 import { flightsService } from '../../../../../../services';
 import { useSelector } from '../../../../../../util';
 
@@ -61,7 +61,7 @@ export const DetailsPanes: React.FC<DetailsPaneProps> = ({ selectedPane, airport
     dispatch(filterFlightsStart());
   }, [dispatch]);
 
-  const flights = useSelector(state => state.flights.filteredFlightsData);
+  const flights = useSelector(selectFilteredFlightsData);
   const airportFlights = flightsService.filterFlightsByIcao(flights, airport.icao);
   const [departures, arrivals] = getCategorizedFligths(airportFlights, airport);
 

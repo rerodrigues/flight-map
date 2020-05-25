@@ -6,9 +6,9 @@ import { useRouteMatch } from 'react-router-dom';
 import BaseMap from '../BaseMap/Map';
 import { Airport } from '../../services/airports/types';
 import { AirportMarker, FlightRoutes } from './components';
-import { AirportsParams, filterAirportsStart } from './store';
+import { AirportsParams, filterAirportsStart, selectFilteredAirportData } from './store';
 import { TitleControl } from '../BaseMap';
-import { filterFlightsStart } from '../Flights';
+import { filterFlightsStart, selectFilteredFlightsData } from '../Flights';
 import { history } from '../../store';
 import { useSelector } from '../../util';
 
@@ -33,8 +33,8 @@ export const Airports: React.FC<AirportsProps> = ({ selected }: AirportsProps) =
     dispatch(filterFlightsStart());
   }, [dispatch, params.countryId]);
 
-  const airports = useSelector(state => state.airports.filteredAirportData);
-  const flights = useSelector(state => state.flights.filteredFlightsData);
+  const airports = useSelector(selectFilteredAirportData);
+  const flights = useSelector(selectFilteredFlightsData);
 
   return (
     <BaseMap>
