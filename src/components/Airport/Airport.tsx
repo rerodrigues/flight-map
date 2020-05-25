@@ -1,12 +1,20 @@
 /* eslint-disable import/prefer-default-export */
 import React, { useEffect } from 'react';
 import { Grid, Paper, makeStyles } from '@material-ui/core';
+import { LatLngTuple } from 'leaflet';
+import { LayerGroup } from 'react-leaflet';
 import { useDispatch } from 'react-redux';
 import { useRouteMatch } from 'react-router-dom';
 
+import BaseMap from '../BaseMap/Map';
+import { AirportMarker, FlightRoutes } from '../Airports/components';
 import { AirportParams, findAirport, selectSelectedAirport } from '.';
-import { Airports } from '../Airports';
+import { Airport as AirportType } from '../../services/airports/types';
 import { DetailsCard } from './components';
+import { RoutesMap, getUniqueRoutes } from '../Airports/components/FlightRoutes';
+import { filterAirportsStart, selectFilteredAirportData } from '../Airports';
+import { history } from '../../store';
+import { selectFilteredFlightsData } from '../Flights';
 import { useSelector } from '../../util';
 
 interface LoadAirportParams {
@@ -19,26 +27,54 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
+const handleMarkerClick = (airport: AirportType): void => {
+  history.push(`/airport/${airport.icao.toLowerCase()}`);
+};
+
+const getBounds = (routesMap: RoutesMap | null): LatLngTuple[] | undefined => {
+  const routes = routesMap && Array.from(routesMap);
+  const bounds =
+    routes && routes.length ? routes.filter(route => route[1]).flatMap(([_, coords]) => coords) : undefined;
+  return bounds;
+};
+
 export const Airport: React.FC = () => {
   const dispatch = useDispatch();
   const { params }: LoadAirportParams = useRouteMatch();
 
   useEffect(() => {
+    dispatch(filterAirportsStart());
     dispatch(findAirport({ icao: params.icao }));
   }, [dispatch, params.icao]);
 
-  const selectedAirport = useSelector(selectSelectedAirport);
+  const airports = useSelector(selectFilteredAirportData);
+  const flights = useSelector(selectFilteredFlightsData);
+  const selected = useSelector(selectSelectedAirport);
 
   const classes = useStyles();
+  const routes = selected && getUniqueRoutes(airports, flights, selected);
 
   return (
     <Grid container component="main" className={classes.root}>
       <Grid item xs={false} sm={4} md={9} zeroMinWidth>
-        <Airports selected={selectedAirport || undefined} />
+        <BaseMap bounds={getBounds(routes)} boundsOptions={{ padding: [150, 150] }}>
+          <LayerGroup>
+            {airports.map((airport: AirportType) => (
+              <AirportMarker
+                airport={airport}
+                key={airport.icao}
+                selected={Boolean(selected && selected.icao.toLowerCase() === airport.icao.toLowerCase())}
+                onClick={handleMarkerClick}
+              />
+            ))}
+          </LayerGroup>
+
+          <LayerGroup>{selected && routes && <FlightRoutes routes={routes} />}</LayerGroup>
+        </BaseMap>
       </Grid>
-      {selectedAirport && (
+      {selected && (
         <Grid item xs={12} sm={8} md={3} component={Paper} elevation={6} square zeroMinWidth>
-          <DetailsCard airport={selectedAirport} />
+          <DetailsCard airport={selected} />
         </Grid>
       )}
     </Grid>

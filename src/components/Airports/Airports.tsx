@@ -5,10 +5,9 @@ import { useRouteMatch } from 'react-router-dom';
 
 import BaseMap from '../BaseMap/Map';
 import { Airport } from '../../services/airports/types';
-import { AirportMarker, FlightRoutes } from './components';
+import { AirportMarker } from './components';
 import { AirportsParams, filterAirportsStart, selectFilteredAirportData } from './store';
 import { TitleControl } from '../BaseMap';
-import { filterFlightsStart, selectFilteredFlightsData } from '../Flights';
 import { history } from '../../store';
 import { useSelector } from '../../util';
 
@@ -16,25 +15,21 @@ interface LoadAirportsParams {
   params: AirportsParams;
 }
 
-export interface AirportsProps extends React.HTMLAttributes<HTMLElement> {
-  selected?: Airport;
-}
+export type AirportsProps = React.HTMLAttributes<HTMLElement>;
 
 const handleMarkerClick = (airport: Airport): void => {
   history.push(`/airport/${airport.icao.toLowerCase()}`);
 };
 
-export const Airports: React.FC<AirportsProps> = ({ selected }: AirportsProps) => {
+export const Airports: React.FC<AirportsProps> = () => {
   const dispatch = useDispatch();
   const { params }: LoadAirportsParams = useRouteMatch();
 
   useEffect(() => {
     dispatch(filterAirportsStart({ countryId: params.countryId }));
-    dispatch(filterFlightsStart());
   }, [dispatch, params.countryId]);
 
   const airports = useSelector(selectFilteredAirportData);
-  const flights = useSelector(selectFilteredFlightsData);
 
   return (
     <BaseMap>
@@ -42,17 +37,8 @@ export const Airports: React.FC<AirportsProps> = ({ selected }: AirportsProps) =
 
       <LayerGroup>
         {airports.map((airport: Airport) => (
-          <AirportMarker
-            airport={airport}
-            key={airport.icao}
-            selected={selected && selected.icao.toLowerCase() === airport.icao.toLowerCase()}
-            onClick={handleMarkerClick}
-          />
+          <AirportMarker airport={airport} key={airport.icao} onClick={handleMarkerClick} />
         ))}
-      </LayerGroup>
-
-      <LayerGroup>
-        {selected && flights && <FlightRoutes airports={airports} flights={flights} selected={selected} />}
       </LayerGroup>
     </BaseMap>
   );
