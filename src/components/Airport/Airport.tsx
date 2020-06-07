@@ -1,11 +1,11 @@
 /* eslint-disable import/prefer-default-export */
 import React, { useEffect } from 'react';
 import { Grid, Paper, makeStyles } from '@material-ui/core';
-import { LatLngTuple } from 'leaflet';
 import { LayerGroup } from 'react-leaflet';
 import { useDispatch } from 'react-redux';
 import { useRouteMatch } from 'react-router-dom';
 
+import { LatLngBoundsExpression } from 'leaflet';
 import BaseMap from '../BaseMap/Map';
 import { AirportMarker, FlightRoutes } from '../Airports/components';
 import { AirportParams, findAirport, selectSelectedAirport } from '.';
@@ -31,12 +31,8 @@ const handleMarkerClick = (airport: AirportType): void => {
   history.push(`/airport/${airport.icao.toLowerCase()}`);
 };
 
-const getBounds = (routesMap: RoutesMap | null): LatLngTuple[] | undefined => {
-  const routes = routesMap && Array.from(routesMap);
-  const bounds =
-    routes && routes.length ? routes.filter(route => route[1]).flatMap(([_, coords]) => coords) : undefined;
-  return bounds;
-};
+const getBounds = (routesMap: RoutesMap): LatLngBoundsExpression | undefined =>
+  routesMap.size ? Array.from(routesMap.values()).flatMap(coords => coords) : undefined;
 
 export const Airport: React.FC = () => {
   const dispatch = useDispatch();
@@ -52,7 +48,7 @@ export const Airport: React.FC = () => {
   const selected = useSelector(selectSelectedAirport);
 
   const classes = useStyles();
-  const routes = selected && getUniqueRoutes(airports, flights, selected);
+  const routes = getUniqueRoutes(airports, flights, selected);
 
   return (
     <Grid container component="main" className={classes.root}>
@@ -63,7 +59,7 @@ export const Airport: React.FC = () => {
               <AirportMarker
                 airport={airport}
                 key={airport.icao}
-                selected={Boolean(selected && selected.icao.toLowerCase() === airport.icao.toLowerCase())}
+                selected={selected && selected.icao.toLowerCase() === airport.icao.toLowerCase()}
                 onClick={handleMarkerClick}
               />
             ))}

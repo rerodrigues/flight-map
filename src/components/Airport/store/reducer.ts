@@ -18,7 +18,7 @@ const airportReducer = (state: AirportState = airportInitialState, action: Airpo
     case ActionTypes.FIND_AIRPORT_ERROR:
       return {
         ...state,
-        selectedAirport: null,
+        selectedAirport: undefined,
       };
     default:
       return state;

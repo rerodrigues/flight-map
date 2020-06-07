@@ -1,9 +1,9 @@
 import { Airport } from '../../../services/airports';
 
 export interface AirportState {
-  selectedAirport: Airport | null;
+  selectedAirport?: Airport;
 }
 
 export const airportInitialState: AirportState = {
-  selectedAirport: null,
+  selectedAirport: undefined,
 };

@@ -16,37 +16,44 @@ interface FlightRouteProps {
   routes: RoutesMap;
 }
 
-export const getUniqueRoutes = (airports: Airport[], flights: Flight[], selected?: Airport): RoutesMap => {
-  const getAirportPosition = (icao: string): LatLngTuple | null => {
-    const foundAiport = airports.find(airport => airport.icao === icao);
+export const getUniqueRoutes = (airports: Airport[], flights: Flight[], selectedAirport?: Airport): RoutesMap => {
+  const findAirportByIcao = (icao: string): Airport | undefined =>
+    airports.find(airport => airport.icao.toLowerCase() === icao);
 
-    return foundAiport ? [foundAiport.lat, foundAiport.lng] : null;
-  };
+  const getAirportCoords = (airport: Airport): LatLngTuple => [airport.lat, airport.lng];
 
-  const getPositions = (code: string[]): LatLngTuple[] | null => {
-    const departure = getAirportPosition(code[0]);
-    const arrival = getAirportPosition(code[1]);
+  const getRouteCoordinates = (departureAirport: Airport, arrivalAirport: Airport): LatLngTuple[] => {
+    const departureCoords = getAirportCoords(departureAirport);
+    const arrivalCoords = getAirportCoords(arrivalAirport);
 
-    return departure && arrival ? [departure, arrival] : null;
+    return [departureCoords, arrivalCoords];
   };
 
   const uniqueRoutes = new Map();
 
-  const filteredFlights = !selected
+  const filteredFlights = !selectedAirport
     ? flights
     : flights.filter(({ departure, arrival }) =>
-        [departure.airportCode.toLowerCase(), arrival.airportCode.toLowerCase()].includes(selected.icao.toLowerCase()),
+        [departure.airportCode.toLowerCase(), arrival.airportCode.toLowerCase()].includes(
+          selectedAirport.icao.toLowerCase(),
+        ),
       );
 
   filteredFlights.forEach(flight => {
-    const departureCode = flight.departure.airportCode;
-    const arrivalCode = flight.arrival.airportCode;
+    const departureCode = flight.departure.airportCode.toLowerCase();
+    const arrivalCode = flight.arrival.airportCode.toLowerCase();
     const uniqueId = [departureCode, arrivalCode].sort().join('-');
 
     if (!uniqueRoutes.has(uniqueId)) {
-      uniqueRoutes.set(uniqueId, getPositions([departureCode, arrivalCode]));
+      const departureAirport = findAirportByIcao(departureCode);
+      const arrivalAirport = findAirportByIcao(arrivalCode);
+
+      if (departureAirport && arrivalAirport) {
+        uniqueRoutes.set(uniqueId, getRouteCoordinates(departureAirport, arrivalAirport));
+      }
     }
   });
+
   return uniqueRoutes;
 };
 
