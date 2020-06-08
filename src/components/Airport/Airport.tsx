@@ -11,10 +11,10 @@ import { AirportMarker, FlightRoutes } from '../Airports/components';
 import { AirportParams, findAirport, selectSelectedAirport } from '.';
 import { Airport as AirportType } from '../../services/airports/types';
 import { DetailsCard } from './components';
-import { RoutesMap, getUniqueRoutes } from '../Airports/components/FlightRoutes';
+import { RoutesMap } from '../Airports/components/FlightRoutes';
 import { filterAirportsStart, selectFilteredAirportData } from '../Airports';
 import { history } from '../../store';
-import { selectFilteredFlightsData } from '../Flights';
+import { selectFlightRoutes } from '../Flights';
 import { useSelector } from '../../util';
 
 interface LoadAirportParams {
@@ -44,11 +44,10 @@ export const Airport: React.FC = () => {
   }, [dispatch, params.icao]);
 
   const airports = useSelector(selectFilteredAirportData);
-  const flights = useSelector(selectFilteredFlightsData);
   const selected = useSelector(selectSelectedAirport);
+  const routes = useSelector(selectFlightRoutes);
 
   const classes = useStyles();
-  const routes = getUniqueRoutes(airports, flights, selected);
 
   return (
     <Grid container component="main" className={classes.root}>
@@ -65,7 +64,7 @@ export const Airport: React.FC = () => {
             ))}
           </LayerGroup>
 
-          <LayerGroup>{selected && routes && <FlightRoutes routes={routes} />}</LayerGroup>
+          <LayerGroup>{routes && <FlightRoutes routes={routes} />}</LayerGroup>
         </BaseMap>
       </Grid>
       {selected && (
