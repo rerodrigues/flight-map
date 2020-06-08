@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { Grid } from '@material-ui/core';
 import { LayerGroup } from 'react-leaflet';
 import { useDispatch } from 'react-redux';
 import { useRouteMatch } from 'react-router-dom';
@@ -39,23 +40,29 @@ export const Airport: React.FC = () => {
   const routes = useSelector(selectFlightRoutes);
 
   return (
-    <>
-      <BaseMap center={getCenter(selected)}>
-        <LayerGroup>
-          {airports.map((airport: AirportType) => (
-            <AirportMarker
-              airport={airport}
-              key={airport.icao}
-              selected={selected && selected.icao.toLowerCase() === airport.icao.toLowerCase()}
-              onClick={handleMarkerClick}
-            />
-          ))}
-        </LayerGroup>
+    <Grid container>
+      <Grid item xs={false} sm={4} md={9} zeroMinWidth>
+        <BaseMap center={getCenter(selected)}>
+          <LayerGroup>
+            {airports.map((airport: AirportType) => (
+              <AirportMarker
+                airport={airport}
+                key={airport.icao}
+                selected={selected && selected.icao.toLowerCase() === airport.icao.toLowerCase()}
+                onClick={handleMarkerClick}
+              />
+            ))}
+          </LayerGroup>
 
-        <LayerGroup>{routes && <FlightRoutes routes={routes} />}</LayerGroup>
-      </BaseMap>
-      {selected && <DetailsCard airport={selected} />}
-    </>
+          <LayerGroup>{routes && <FlightRoutes routes={routes} />}</LayerGroup>
+        </BaseMap>
+      </Grid>
+      {selected && (
+        <Grid item xs={12} sm={8} md={3}>
+          <DetailsCard airport={selected} />
+        </Grid>
+      )}
+    </Grid>
   );
 };
 

@@ -40,11 +40,11 @@ const getUniqueFligths = (flights: Flight[]): Map<string, Flight> => {
   return uniqueFlights;
 };
 
-const getCategorizedFligths = (airportFlights: Flight[], airport: Airport): Array<Flight[]> =>
+const getCategorizedFligths = (airportFlights: Flight[], airportCode: string): Array<Flight[]> =>
   Array.from(getUniqueFligths(airportFlights).values()).reduce(
     (accumulated: Array<Flight[]>, flight: Flight) => {
       const accumulatedFlights = [...accumulated];
-      if (flight.departure.airportCode === airport.icao) {
+      if (flight.departure.airportCode === airportCode) {
         accumulatedFlights[DetailTabs.DEPARTURES].push(flight);
       } else {
         accumulatedFlights[DetailTabs.ARRIVALS].push(flight);
@@ -63,7 +63,7 @@ export const DetailsPanes: React.FC<DetailsPaneProps> = ({ selectedPane, airport
 
   const flights = useSelector(selectFilteredFlightsData);
   const airportFlights = flightsService.filterFlightsByIcao(flights, airport.icao);
-  const [departures, arrivals] = getCategorizedFligths(airportFlights, airport);
+  const [departures, arrivals] = getCategorizedFligths(airportFlights, airport.icao);
 
   const Pane =
     selectedPane === DetailTabs.ARRIVALS ? (
