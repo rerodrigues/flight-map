@@ -1,17 +1,14 @@
-/* eslint-disable import/prefer-default-export */
 import React, { useEffect } from 'react';
-import { Grid, Paper, makeStyles } from '@material-ui/core';
 import { LayerGroup } from 'react-leaflet';
 import { useDispatch } from 'react-redux';
 import { useRouteMatch } from 'react-router-dom';
 
-import { LatLngBoundsExpression } from 'leaflet';
+import { LatLngTuple } from 'leaflet';
 import BaseMap from '../BaseMap/Map';
 import { AirportMarker, FlightRoutes } from '../Airports/components';
 import { AirportParams, findAirport, selectSelectedAirport } from '.';
 import { Airport as AirportType } from '../../services/airports/types';
 import { DetailsCard } from './components';
-import { RoutesMap } from '../Airports/components/FlightRoutes';
 import { filterAirportsStart, selectFilteredAirportData } from '../Airports';
 import { history } from '../../store';
 import { selectFlightRoutes } from '../Flights';
@@ -21,18 +18,12 @@ interface LoadAirportParams {
   params: AirportParams;
 }
 
-const useStyles = makeStyles(() => ({
-  root: {
-    height: '100vh',
-  },
-}));
-
 const handleMarkerClick = (airport: AirportType): void => {
   history.push(`/airport/${airport.icao.toLowerCase()}`);
 };
 
-const getBounds = (routesMap: RoutesMap): LatLngBoundsExpression | undefined =>
-  routesMap.size ? Array.from(routesMap.values()).flatMap(coords => coords) : undefined;
+const getCenter = (selected?: AirportType): LatLngTuple | undefined =>
+  selected ? [selected.lat, selected.lng] : undefined;
 
 export const Airport: React.FC = () => {
   const dispatch = useDispatch();
@@ -47,32 +38,24 @@ export const Airport: React.FC = () => {
   const selected = useSelector(selectSelectedAirport);
   const routes = useSelector(selectFlightRoutes);
 
-  const classes = useStyles();
-
   return (
-    <Grid container component="main" className={classes.root}>
-      <Grid item xs={false} sm={4} md={9} zeroMinWidth>
-        <BaseMap bounds={getBounds(routes)} boundsOptions={{ padding: [150, 150] }}>
-          <LayerGroup>
-            {airports.map((airport: AirportType) => (
-              <AirportMarker
-                airport={airport}
-                key={airport.icao}
-                selected={selected && selected.icao.toLowerCase() === airport.icao.toLowerCase()}
-                onClick={handleMarkerClick}
-              />
-            ))}
-          </LayerGroup>
+    <>
+      <BaseMap center={getCenter(selected)}>
+        <LayerGroup>
+          {airports.map((airport: AirportType) => (
+            <AirportMarker
+              airport={airport}
+              key={airport.icao}
+              selected={selected && selected.icao.toLowerCase() === airport.icao.toLowerCase()}
+              onClick={handleMarkerClick}
+            />
+          ))}
+        </LayerGroup>
 
-          <LayerGroup>{routes && <FlightRoutes routes={routes} />}</LayerGroup>
-        </BaseMap>
-      </Grid>
-      {selected && (
-        <Grid item xs={12} sm={8} md={3} component={Paper} elevation={6} square zeroMinWidth>
-          <DetailsCard airport={selected} />
-        </Grid>
-      )}
-    </Grid>
+        <LayerGroup>{routes && <FlightRoutes routes={routes} />}</LayerGroup>
+      </BaseMap>
+      {selected && <DetailsCard airport={selected} />}
+    </>
   );
 };
 

@@ -1,8 +1,9 @@
 import React from 'react';
-import { Card, CardContent, Typography, makeStyles } from '@material-ui/core';
+import { Card, CardContent, Typography } from '@material-ui/core';
 
 import { Airport, createNameFromInfo } from '../../../../services/airports';
 import { DetailsPanes, DetailsTabs } from './components';
+import * as styles from './styles';
 
 interface DetailsCardProps {
   airport: Airport;
@@ -13,14 +14,8 @@ export enum DetailTabs {
   ARRIVALS,
 }
 
-const useStyles = makeStyles(() => ({
-  root: {
-    height: '100vh',
-  },
-}));
-
 export const DetailsCard: React.FC<DetailsCardProps> = ({ airport }: DetailsCardProps) => {
-  const classes = useStyles();
+  const classes = styles.detailsCard();
 
   const [activeTab, setValue] = React.useState(DetailTabs.DEPARTURES);
 

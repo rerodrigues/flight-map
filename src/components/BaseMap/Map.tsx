@@ -11,9 +11,9 @@ export default class BaseMap extends Component<BaseMapProps, MapState> {
 
   render(): JSX.Element {
     const { state, props } = this;
-    const { bounds, boundsOptions } = props;
+    const { bounds, boundsOptions, center = state.center } = props;
     return (
-      <Map center={state.center} zoom={state.zoom} zoomcontrol={false} bounds={bounds} boundsOptions={boundsOptions}>
+      <Map center={center} zoom={state.zoom} zoomcontrol={false} bounds={bounds} boundsOptions={boundsOptions}>
         <TileLayer attribution="" url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
         <BackControl />
         <HomeControl />
