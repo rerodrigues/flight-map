@@ -1,17 +1,18 @@
-/* eslint-disable @typescript-eslint/ban-ts-ignore */
 import React from 'react';
 import clsx from 'clsx';
 import * as styles from './styles';
+import { PlaneIcon } from '.';
 
-const rnd = (Math.floor(Math.random() * 20) + 1).toString().padStart(2, '0');
+const numOfSkies = 16;
+const randomSky = Math.floor(Math.random() * numOfSkies) + 1;
 
 export const Loading: React.FC = () => {
-  const classes = styles.useStyles();
-  // @ts-ignore
-  const skyClass = classes[`sky-gradient-${rnd}`];
+  const classes = styles.useStyles() as Record<string, string>;
+  const skyClass = classes[`sky-gradient-${randomSky}`];
 
   return (
     <div className={clsx(classes.root, skyClass)}>
+      <PlaneIcon className={classes.icon} />
       <h1 className={classes.loading}>Loading...</h1>
     </div>
   );
