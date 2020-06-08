@@ -1,16 +1,16 @@
-/* eslint-disable import/prefer-default-export */
 import React, { useEffect } from 'react';
+import { Link, useRouteMatch } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { useRouteMatch, Link } from 'react-router-dom';
-import { loadFlightsFetch, LoadFlightsParams } from './store';
-import { Flight } from '../../services/flights/types';
-import { history } from '../../store';
-import { useSelector, isRequestSuccess, RequestData } from '../../util';
 
-const renderFlights = (flights: RequestData<Flight[]>): JSX.Element => (
+import { Flight } from '../../services/flights/types';
+import { FlightsParams, filterFlightsStart, selectFilteredFlightsData } from './store';
+import { history } from '../../store';
+import { useSelector } from '../../util';
+
+const renderFlights = (flights: Flight[]): JSX.Element => (
   <ul>
-    {isRequestSuccess(flights) &&
-      flights.data
+    {flights.length > 0 &&
+      flights
         .sort((a: Flight, b: Flight) => {
           if (a.companyCode > b.companyCode) {
             return 1;
@@ -32,29 +32,19 @@ const renderFlights = (flights: RequestData<Flight[]>): JSX.Element => (
   </ul>
 );
 
-interface FlightsParams {
-  params: LoadFlightsParams;
+interface LoadFlightsParams {
+  params: FlightsParams;
 }
 
 export const Flights: React.FC = () => {
   const dispatch = useDispatch();
-  const { params }: FlightsParams = useRouteMatch();
+  const { params }: LoadFlightsParams = useRouteMatch();
 
   useEffect(() => {
-    try {
-      if (params.companyCode) {
-        dispatch(loadFlightsFetch({ companyCode: params.companyCode }));
-      } else if (params.icaoCode) {
-        dispatch(loadFlightsFetch({ icaoCode: params.icaoCode }));
-      } else {
-        dispatch(loadFlightsFetch());
-      }
-    } catch (e) {
-      console.log(e);
-    }
+    dispatch(filterFlightsStart({ companyCode: params.companyCode, icaoCode: params.icaoCode }));
   }, [dispatch, params.companyCode, params.icaoCode]);
 
-  const flights = useSelector(state => state.flights.flightsData);
+  const flights = useSelector(selectFilteredFlightsData);
 
   return (
     <>
@@ -64,7 +54,9 @@ export const Flights: React.FC = () => {
       {params.companyCode && <h1>Flights of Company {params.companyCode.toUpperCase()}</h1>}
       {params.icaoCode && <h1>Flights of Airport {params.icaoCode.toUpperCase()}</h1>}
       {!params.companyCode && !params.icaoCode && <h1>All Flights</h1>}
-      {isRequestSuccess(flights) && renderFlights(flights)}
+      {renderFlights(flights)}
     </>
   );
 };
+
+export default Flights;

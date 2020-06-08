@@ -5,7 +5,7 @@ interface TitleControlProps {
   title: string;
 }
 
-const TitleControl: React.FC<TitleControlProps> = (props: TitleControlProps) => (
+export const TitleControl: React.FC<TitleControlProps> = (props: TitleControlProps) => (
   <Control position="topright">
     <div>
       <h2>{props.title}</h2>

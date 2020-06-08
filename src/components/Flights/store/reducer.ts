@@ -1,12 +1,14 @@
 import { ActionTypes } from './actionTypes';
 import { FlightsAction } from './types';
-import { requestFetching, requestSuccess, requestError } from '../../../util';
 import { FlightsState, flightsInitialState } from './state';
+import { requestError, requestFetching, requestSuccess } from '../../../util';
 
 const flightsReducer = (state: FlightsState = flightsInitialState, action: FlightsAction): FlightsState => {
-  // if (!(action.type in ActionTypes)) {
-  //   return state;
-  // }
+  const hasAction = (actionType: string): actionType is keyof typeof ActionTypes => actionType.length > 0;
+
+  if (!hasAction(action.type)) {
+    return state;
+  }
 
   switch (action.type) {
     case ActionTypes.LOAD_FLIGHTS_FETCH:
@@ -26,6 +28,17 @@ const flightsReducer = (state: FlightsState = flightsInitialState, action: Fligh
         flightsData: requestError(message, code),
       };
     }
+    case ActionTypes.FILTER_FLIGHTS_START:
+    case ActionTypes.FILTER_FLIGHTS_ERROR:
+      return {
+        ...state,
+        filteredFlightsData: [],
+      };
+    case ActionTypes.FILTER_FLIGHTS_SUCCESS:
+      return {
+        ...state,
+        filteredFlightsData: action.payload,
+      };
     default:
       return state;
   }

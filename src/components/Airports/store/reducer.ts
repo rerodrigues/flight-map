@@ -1,12 +1,14 @@
 import { ActionTypes } from './actionTypes';
 import { AirportsAction } from './types';
-import { requestFetching, requestSuccess, requestError } from '../../../util';
 import { AirportsState, airportsInitialState } from './state';
+import { requestError, requestFetching, requestSuccess } from '../../../util';
 
 const airportsReducer = (state: AirportsState = airportsInitialState, action: AirportsAction): AirportsState => {
-  // if (!(action.type in ActionTypes)) {
-  //   return state;
-  // }
+  const hasAction = (actionType: string): actionType is keyof typeof ActionTypes => actionType.length > 0;
+
+  if (!hasAction(action.type)) {
+    return state;
+  }
 
   switch (action.type) {
     case ActionTypes.LOAD_AIRPORTS_FETCH:
@@ -26,15 +28,16 @@ const airportsReducer = (state: AirportsState = airportsInitialState, action: Ai
         airportsData: requestError(message, code),
       };
     }
-    case ActionTypes.FILTER_AIRPORTS_SUCCESS:
-      return {
-        ...state,
-        filteredAirportData: action.payload,
-      };
+    case ActionTypes.FILTER_AIRPORTS_START:
     case ActionTypes.FILTER_AIRPORTS_ERROR:
       return {
         ...state,
         filteredAirportData: [],
+      };
+    case ActionTypes.FILTER_AIRPORTS_SUCCESS:
+      return {
+        ...state,
+        filteredAirportData: action.payload,
       };
     default:
       return state;

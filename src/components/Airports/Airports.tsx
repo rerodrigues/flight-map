@@ -1,29 +1,27 @@
 import React, { useEffect } from 'react';
+import { LayerGroup } from 'react-leaflet';
 import { useDispatch } from 'react-redux';
 import { useRouteMatch } from 'react-router-dom';
 
 import BaseMap from '../BaseMap/Map';
-import { filterAirportsStart, AirportsParams } from './store';
-import { useSelector, isRequestSuccess } from '../../util';
 import { Airport } from '../../services/airports/types';
+import { AirportMarker } from './components';
+import { AirportsParams, filterAirportsStart, selectFilteredAirportData } from './store';
 import { TitleControl } from '../BaseMap';
-import { AirportMarker, FlightRoutes } from './components';
 import { history } from '../../store';
-import { LayerGroup } from 'react-leaflet';
+import { useSelector } from '../../util';
 
 interface LoadAirportsParams {
   params: AirportsParams;
 }
 
-export interface AirportsProps {
-  selected: Airport | null;
-}
+export type AirportsProps = React.HTMLAttributes<HTMLElement>;
 
 const handleMarkerClick = (airport: Airport): void => {
   history.push(`/airport/${airport.icao.toLowerCase()}`);
 };
 
-export const Airports: React.FC<AirportsProps> = ({ selected }: AirportsProps) => {
+export const Airports: React.FC<AirportsProps> = () => {
   const dispatch = useDispatch();
   const { params }: LoadAirportsParams = useRouteMatch();
 
@@ -31,8 +29,7 @@ export const Airports: React.FC<AirportsProps> = ({ selected }: AirportsProps) =
     dispatch(filterAirportsStart({ countryId: params.countryId }));
   }, [dispatch, params.countryId]);
 
-  const airports = useSelector(state => state.airports.filteredAirportData);
-  const flights = useSelector(state => state.flights.flightsData);
+  const airports = useSelector(selectFilteredAirportData);
 
   return (
     <BaseMap>
@@ -40,20 +37,11 @@ export const Airports: React.FC<AirportsProps> = ({ selected }: AirportsProps) =
 
       <LayerGroup>
         {airports.map((airport: Airport) => (
-          <AirportMarker
-            airport={airport}
-            key={airport.icao}
-            selected={selected && selected.icao.toLowerCase() === airport.icao.toLowerCase()}
-            onClick={handleMarkerClick}
-          />
+          <AirportMarker airport={airport} key={airport.icao} onClick={handleMarkerClick} />
         ))}
-      </LayerGroup>
-
-      <LayerGroup>
-        {selected && isRequestSuccess(flights) && (
-          <FlightRoutes airports={airports} flights={flights.data} selected={selected} />
-        )}
       </LayerGroup>
     </BaseMap>
   );
 };
+
+export default Airports;

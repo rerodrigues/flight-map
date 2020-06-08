@@ -42,6 +42,9 @@ module.exports = {
     'no-console': 'off',
     'react/state-in-constructor': ['error', 'never'],
     'react/destructuring-assignment': 'off',
+    'import/prefer-default-export': 'off',
+    'react/jsx-props-no-spreading': 'off',
+    'import/no-named-as-default': 'off',
     'import/no-cycle': 'off' // FIXME: Should resolve dependency cicle in when acessing store/state
   },
 };

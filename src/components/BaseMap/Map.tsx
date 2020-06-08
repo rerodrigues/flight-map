@@ -1,20 +1,24 @@
-import React, { Component } from 'react';
-import { Map, TileLayer } from 'react-leaflet';
-import { mapDefaultState, MapState } from './store';
-import { BackControl, HomeControl } from './components';
+import React, { useState } from 'react';
+import { Map, MapProps, TileLayer } from 'react-leaflet';
 
-export default class BaseMap extends Component<{}, MapState> {
-  state = { ...mapDefaultState };
+import { BackControl, HomeControl, ZoomControl } from './components';
+import { mapDefaultState } from './store';
 
-  render(): JSX.Element {
-    const { state, props } = this;
-    return (
-      <Map center={state.center} zoom={state.zoom} zoomcontrol={false}>
-        <TileLayer attribution="" url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-        <BackControl />
-        <HomeControl />
-        {props.children}
-      </Map>
-    );
-  }
-}
+type BaseMapProps = MapProps;
+
+export const BaseMap: React.FC<BaseMapProps> = (props: BaseMapProps) => {
+  const [state] = useState(mapDefaultState);
+  const { center = state.center } = props;
+
+  return (
+    <Map {...props} zoomControl={false} zoom={state.zoom} center={center}>
+      <TileLayer attribution="" url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+      <ZoomControl />
+      <HomeControl />
+      <BackControl />
+      {props.children}
+    </Map>
+  );
+};
+
+export default BaseMap;

@@ -1,8 +1,10 @@
-/* eslint-disable import/no-cycle */
 import { compose } from 'redux';
-import { AppState } from '../../../store';
+
 import { AirportsState } from './state';
+import { AppState } from '../../../store';
 
 export const selectAirports = (state: AppState): AirportsState => state.airports;
 
 export const selectAirportsData = compose(state => state.airportsData, selectAirports);
+
+export const selectFilteredAirportData = compose(state => state.filteredAirportData, selectAirports);
