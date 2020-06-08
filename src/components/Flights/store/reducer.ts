@@ -4,9 +4,11 @@ import { FlightsState, flightsInitialState } from './state';
 import { requestError, requestFetching, requestSuccess } from '../../../util';
 
 const flightsReducer = (state: FlightsState = flightsInitialState, action: FlightsAction): FlightsState => {
-  // if (!(action.type in ActionTypes)) {
-  //   return state;
-  // }
+  const hasAction = (actionType: string): actionType is keyof typeof ActionTypes => actionType.length > 0;
+
+  if (!hasAction(action.type)) {
+    return state;
+  }
 
   switch (action.type) {
     case ActionTypes.LOAD_FLIGHTS_FETCH:

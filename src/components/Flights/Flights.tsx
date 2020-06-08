@@ -3,7 +3,7 @@ import { Link, useRouteMatch } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 import { Flight } from '../../services/flights/types';
-import { FlightsParams, filterFlightsStart } from './store';
+import { FlightsParams, filterFlightsStart, selectFilteredFlightsData } from './store';
 import { history } from '../../store';
 import { useSelector } from '../../util';
 
@@ -44,7 +44,7 @@ export const Flights: React.FC = () => {
     dispatch(filterFlightsStart({ companyCode: params.companyCode, icaoCode: params.icaoCode }));
   }, [dispatch, params.companyCode, params.icaoCode]);
 
-  const flights = useSelector(state => state.flights.filteredFlightsData);
+  const flights = useSelector(selectFilteredFlightsData);
 
   return (
     <>

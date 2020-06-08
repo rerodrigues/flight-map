@@ -3,9 +3,11 @@ import { AirportAction } from './types';
 import { AirportState, airportInitialState } from './state';
 
 const airportReducer = (state: AirportState = airportInitialState, action: AirportAction): AirportState => {
-  // if (!(action.type in ActionTypes)) {
-  //   return state;
-  // }
+  const hasAction = (actionType: string): actionType is keyof typeof ActionTypes => actionType.length > 0;
+
+  if (!hasAction(action.type)) {
+    return state;
+  }
 
   switch (action.type) {
     case ActionTypes.FIND_AIRPORT_SUCCESS:
@@ -16,7 +18,7 @@ const airportReducer = (state: AirportState = airportInitialState, action: Airpo
     case ActionTypes.FIND_AIRPORT_ERROR:
       return {
         ...state,
-        selectedAirport: null,
+        selectedAirport: undefined,
       };
     default:
       return state;
