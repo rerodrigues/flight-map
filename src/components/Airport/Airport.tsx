@@ -10,7 +10,7 @@ import { AirportMarker, FlightRoutes } from '../Airports/components';
 import { AirportParams, findAirport, selectSelectedAirport } from './store';
 import { Airport as AirportType } from '../../services/airports/types';
 import { DetailsCard } from './components';
-import { filterAirportsStart, selectFilteredAirportData } from '../Airports';
+import { filterAirportsStart, selectFilteredAirportData } from '../Airports/store';
 import { history } from '../../store';
 import { selectFlightRoutes } from '../Flights';
 import { useSelector } from '../../util';

@@ -1,1 +1,1 @@
-export * from './Curve';
+export { default as Curve } from './Curve';

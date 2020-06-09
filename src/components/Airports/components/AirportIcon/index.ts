@@ -1,10 +1,4 @@
-import { Icon } from 'leaflet';
+import AirportIcon from './AirportIcon';
 
-const AirportIcon = new Icon({
-  iconUrl: '/img/tower.png',
-  iconSize: [36, 36],
-  iconAnchor: [18, 36],
-  popupAnchor: [0, -74],
-});
-
+export * from './AirportIcon';
 export default AirportIcon;
