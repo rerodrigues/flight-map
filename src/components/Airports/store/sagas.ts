@@ -1,4 +1,5 @@
 import { all, call, put, select, takeLatest } from 'redux-saga/effects';
+import { SagaIterator } from 'redux-saga';
 import {
   filterAirportsError,
   filterAirportsSuccess,
@@ -6,11 +7,9 @@ import {
   loadAirportsFetch,
   loadAirportsSuccess,
 } from './actions';
-import { loadFlightsFetch, selectFlightsData } from '../../Flights/store';
 
 import { ActionTypes } from './actionTypes';
 import { FilterAirportsStart } from './types';
-import { SagaIterator } from 'redux-saga';
 import { airportsService } from '../../../services';
 import { isRequestSuccess } from '../../../util';
 import { selectAirportsData } from './selectors';
@@ -18,12 +17,6 @@ import { selectAirportsData } from './selectors';
 export function* loadAirportsSaga(): SagaIterator {
   try {
     const airports = yield call(airportsService.getAirports);
-    const flights = yield select(selectFlightsData);
-
-    if (!isRequestSuccess(flights)) {
-      yield put(loadFlightsFetch());
-    }
-
     yield put(loadAirportsSuccess(airports));
   } catch (error) {
     console.log(error);
