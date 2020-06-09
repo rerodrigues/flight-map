@@ -63,8 +63,8 @@ export const selectAirportFlights = createSelector(
   selectFilteredFlightsData,
   (flights): FlightsMap =>
     flights.reduce((uniqueFlights, flight) => {
-      const departureCode = flight.departure.airportCode;
-      const arrivalCode = flight.arrival.airportCode;
+      const departureCode = flight.departure.airportCode.toLowerCase();
+      const arrivalCode = flight.arrival.airportCode.toLowerCase();
       const uniqueId = [departureCode, arrivalCode].join('-');
 
       if (!uniqueFlights.has(uniqueId)) {
