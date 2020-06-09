@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import { useRouteMatch } from 'react-router-dom';
 
 import { LatLngTuple } from 'leaflet';
-import BaseMap from '../BaseMap/Map';
+import BaseMap from '../BaseMap/BaseMap';
 import { AirportMarker, FlightRoutes } from '../Airports/components';
 import { AirportParams, findAirport, selectSelectedAirport } from './store';
 import { Airport as AirportType } from '../../services/airports/types';
