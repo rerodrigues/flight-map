@@ -1,4 +1,4 @@
-export * from './Airport';
+export { default as Airport } from './Airport';
 export * from './Airports';
 export * from './BaseMap';
 export * from './Flights';
