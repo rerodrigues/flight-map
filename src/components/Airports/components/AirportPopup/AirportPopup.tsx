@@ -2,7 +2,7 @@ import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import { Link } from 'react-router-dom';
 import { Popup } from 'react-leaflet';
-import * as styles from './styles';
+import { useStyles } from './styles';
 import { Airport } from '../../../../services/airports/types';
 
 interface AirportPopupProps {
@@ -10,7 +10,7 @@ interface AirportPopupProps {
 }
 
 export const AirportPopup: React.FC<AirportPopupProps> = ({ airport }: AirportPopupProps) => {
-  const classes = styles.airportPopup();
+  const classes = useStyles();
 
   return (
     <Popup closeButton={false}>

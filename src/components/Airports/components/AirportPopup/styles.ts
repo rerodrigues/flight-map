@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core';
 
-export const airportPopup = makeStyles({
+export const useStyles = makeStyles({
   root: {},
   title: {
     fontSize: 20,
