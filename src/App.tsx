@@ -5,7 +5,8 @@ import { ConnectedRouter } from 'connected-react-router';
 import { useSelector, isRequestSuccess } from './util';
 import { loadFlightsFetch } from './components/Flights';
 import { loadAirportsFetch } from './components/Airports';
-import { Loading, Routes } from './components/Home';
+import { Loading } from './components/Loading';
+import { Routes } from './components/Routes';
 
 import { history } from './store';
 
