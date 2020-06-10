@@ -1,47 +1,30 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Grid } from '@material-ui/core';
 import { LayerGroup } from 'react-leaflet';
-import { useDispatch } from 'react-redux';
-import { useRouteMatch } from 'react-router-dom';
 import { LatLngTuple } from 'leaflet';
 
 import BaseMap from '../BaseMap';
 import { AirportMarker, FlightRoutes } from '../Airports';
-import { AirportParams, findAirport, selectSelectedAirport } from './store';
 import { Airport as AirportType } from '../../services/airports';
+import { RoutesMap } from '../Airports/components/FlightRoutes';
 import { DetailsCard } from './components';
-import { filterAirportsStart, selectFilteredAirportData } from '../Airports/store';
-import { history } from '../../store';
-import { selectFlightRoutes } from '../Flights/store';
-import { useSelector } from '../../util';
 
-interface LoadAirportParams {
-  params: AirportParams;
+interface AirportProps {
+  airports: AirportType[];
+  selected?: AirportType;
+  routes: RoutesMap;
+  onMarkerClick: (airport: AirportType) => void;
 }
-
-const handleMarkerClick = (airport: AirportType): void => {
-  history.push(`/airport/${airport.icao.toLowerCase()}`);
-};
 
 const getCenter = (selected?: AirportType): LatLngTuple | undefined =>
   selected ? [selected.lat, selected.lng] : undefined;
 
-export const Airport: React.FC = () => {
-  const dispatch = useDispatch();
-  const { params }: LoadAirportParams = useRouteMatch();
-
-  useEffect(() => {
-    dispatch(filterAirportsStart());
-    dispatch(findAirport({ icao: params.icao }));
-  }, [dispatch, params.icao]);
-
-  const airports = useSelector(selectFilteredAirportData);
-  const selected = useSelector(selectSelectedAirport);
-  const routes = useSelector(selectFlightRoutes);
+export const Airport: React.FC<AirportProps> = (props: AirportProps) => {
+  const { airports, selected, routes, onMarkerClick } = props;
 
   return (
     <Grid container>
-      <Grid item xs={false} sm={4} md={9} zeroMinWidth>
+      <Grid item xs={false} sm={4} md={9}>
         <BaseMap center={getCenter(selected)}>
           <LayerGroup>
             {airports.map((airport: AirportType) => (
@@ -49,7 +32,7 @@ export const Airport: React.FC = () => {
                 airport={airport}
                 key={airport.icao}
                 selected={selected && selected.icao.toLowerCase() === airport.icao.toLowerCase()}
-                onClick={handleMarkerClick}
+                onClick={onMarkerClick}
               />
             ))}
           </LayerGroup>
