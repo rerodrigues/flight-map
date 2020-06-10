@@ -12,7 +12,7 @@ import { Airport as AirportType } from '../../services/airports/types';
 import { DetailsCard } from './components';
 import { filterAirportsStart, selectFilteredAirportData } from '../Airports/store';
 import { history } from '../../store';
-import { selectFlightRoutes } from '../Flights';
+import { selectFlightRoutes } from '../Flights/store';
 import { useSelector } from '../../util';
 
 interface LoadAirportParams {

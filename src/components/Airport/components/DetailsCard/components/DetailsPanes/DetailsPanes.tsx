@@ -6,7 +6,7 @@ import DeparturesPane from '../DeparturesPane';
 import { Airport } from '../../../../../../services/airports';
 import { DetailTabs } from '../../DetailsCard';
 import { Flight } from '../../../../../../services/flights';
-import { filterFlightsStart, selectAirportFlights } from '../../../../../Flights';
+import { filterFlightsStart, selectAirportFlights } from '../../../../../Flights/store';
 import { useSelector } from '../../../../../../util';
 
 export interface DetailsPaneProps {
