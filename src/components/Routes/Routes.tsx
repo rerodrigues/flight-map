@@ -1,6 +1,7 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
-import { Airports, Flights, Airport, Menu } from '..';
+import { Flights, Airports, Menu } from '..';
+import { Airport } from '../../containers';
 
 export const Routes: React.FC = () => (
   <Switch>
