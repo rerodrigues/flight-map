@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
-import ArrivalsPane from '../ArrivalsPane';
-import DeparturesPane from '../DeparturesPane';
+import ArrivalsPane from '../../../../../../components/Airport/components/DetailsCard/components/ArrivalsPane';
+import DeparturesPane from '../../../../../../components/Airport/components/DetailsCard/components/DeparturesPane';
 import { Airport } from '../../../../../../services/airports';
-import { DetailTabs } from '../../DetailsCard';
+import { DetailTabs } from '../../../../../../components/Airport/components/DetailsCard';
 import { Flight } from '../../../../../../services/flights';
-import { filterFlightsStart, selectAirportFlights } from '../../../../../Flights/store';
+import { filterFlightsStart, selectAirportFlights } from '../../../../../../components/Flights/store';
 import { useSelector } from '../../../../../../util';
 
 export interface DetailsPaneProps {
@@ -15,16 +15,6 @@ export interface DetailsPaneProps {
 }
 
 export type FlightsMap = Map<string, Flight>;
-
-export const getFlightCodes = (flight: Flight): string[] => {
-  const flightCode = `${flight.companyCode.toUpperCase()}${flight.number}`;
-  if (flight.codeshare) {
-    const codeshares = flight.codeshare.split(' - ');
-    codeshares.unshift(flightCode);
-    return codeshares.map((codeshare: string) => codeshare.replace('/', ''));
-  }
-  return [flightCode];
-};
 
 const getCategorizedFligths = (flights: FlightsMap, airportCode: string): Array<Flight[]> =>
   Array.from(flights.values()).reduce(

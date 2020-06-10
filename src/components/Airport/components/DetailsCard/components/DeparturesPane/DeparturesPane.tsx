@@ -6,7 +6,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import React from 'react';
 
 import { Flight } from '../../../../../../services/flights';
-import { getFlightCodes } from '../DetailsPanes';
+import { getFlightCodes } from '../../DetailsCard';
 
 interface DeparturesPaneProps {
   flights: Flight[];

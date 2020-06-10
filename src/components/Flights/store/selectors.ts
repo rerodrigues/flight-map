@@ -8,7 +8,7 @@ import { selectFilteredAirportData } from '../../Airports/store/selectors';
 import { selectSelectedAirport } from '../../Airport/store';
 import { RoutesMap } from '../../Airports/components/FlightRoutes';
 import { Airport } from '../../../services/airports';
-import { FlightsMap } from '../../Airport/components/DetailsCard/components/DetailsPanes';
+import { FlightsMap } from '../../../containers/Airport/containers/DetailsCard/containers/DetailsPanes/DetailsPanes';
 
 export const selectFlights = (state: AppState): FlightsState => state.flights;
 
