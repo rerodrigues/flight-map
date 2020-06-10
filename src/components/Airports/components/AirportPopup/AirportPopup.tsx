@@ -20,9 +20,9 @@ export const AirportPopup: React.FC<AirportPopupProps> = ({ airport }: AirportPo
       <Typography className={classes.subtitle} color="textSecondary">
         Country: <Link to={`/airports/country/${airport.country}`}>{airport.country}</Link>
       </Typography>
-      <Typography variant="body2" component="p">
+      {/* <Typography variant="body2" component="p">
         <Link to={`/flights/airport/${airport.icao}`}>All Flights from this airport</Link>
-      </Typography>
+      </Typography> */}
     </Popup>
   );
 };
