@@ -3,11 +3,11 @@ import Control from 'react-leaflet-control';
 import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
 import { useLeaflet } from 'react-leaflet';
-import * as styles from './styles';
+import { useStyles } from './styles';
 
 export const ZoomControl: React.FC = () => {
   const { map } = useLeaflet();
-  const classes = styles.zoomControl();
+  const classes = useStyles();
 
   return (
     <Control position="topleft">

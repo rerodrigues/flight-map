@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core';
 
-export const zoomControl = makeStyles({
+export const useStyles = makeStyles({
   root: {
     display: 'flex',
     flexDirection: 'column',

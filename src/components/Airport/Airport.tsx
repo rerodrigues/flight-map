@@ -3,16 +3,16 @@ import { Grid } from '@material-ui/core';
 import { LayerGroup } from 'react-leaflet';
 import { useDispatch } from 'react-redux';
 import { useRouteMatch } from 'react-router-dom';
-
 import { LatLngTuple } from 'leaflet';
-import BaseMap from '../BaseMap/Map';
-import { AirportMarker, FlightRoutes } from '../Airports/components';
-import { AirportParams, findAirport, selectSelectedAirport } from '.';
-import { Airport as AirportType } from '../../services/airports/types';
+
+import BaseMap from '../BaseMap';
+import { AirportMarker, FlightRoutes } from '../Airports';
+import { AirportParams, findAirport, selectSelectedAirport } from './store';
+import { Airport as AirportType } from '../../services/airports';
 import { DetailsCard } from './components';
-import { filterAirportsStart, selectFilteredAirportData } from '../Airports';
+import { filterAirportsStart, selectFilteredAirportData } from '../Airports/store';
 import { history } from '../../store';
-import { selectFlightRoutes } from '../Flights';
+import { selectFlightRoutes } from '../Flights/store';
 import { useSelector } from '../../util';
 
 interface LoadAirportParams {

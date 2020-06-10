@@ -3,7 +3,7 @@ import { Card, CardContent, Typography } from '@material-ui/core';
 
 import { Airport, createNameFromInfo } from '../../../../services/airports';
 import { DetailsPanes, DetailsTabs } from './components';
-import * as styles from './styles';
+import { useStyles } from './styles';
 
 interface DetailsCardProps {
   airport: Airport;
@@ -15,7 +15,7 @@ export enum DetailTabs {
 }
 
 export const DetailsCard: React.FC<DetailsCardProps> = ({ airport }: DetailsCardProps) => {
-  const classes = styles.detailsCard();
+  const classes = useStyles();
 
   const [activeTab, setValue] = React.useState(DetailTabs.DEPARTURES);
 

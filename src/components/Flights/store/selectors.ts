@@ -8,6 +8,7 @@ import { selectFilteredAirportData } from '../../Airports/store/selectors';
 import { selectSelectedAirport } from '../../Airport/store';
 import { RoutesMap } from '../../Airports/components/FlightRoutes';
 import { Airport } from '../../../services/airports';
+import { FlightsMap } from '../../Airport/components/DetailsCard/components/DetailsPanes';
 
 export const selectFlights = (state: AppState): FlightsState => state.flights;
 
@@ -32,8 +33,6 @@ export const selectFlightRoutes = createSelector(
       return [departureCoords, arrivalCoords];
     };
 
-    const uniqueRoutes = new Map();
-
     const filteredFlights = !selectedAirport
       ? flights
       : flights.filter(({ departure, arrival }) =>
@@ -42,7 +41,7 @@ export const selectFlightRoutes = createSelector(
           ),
         );
 
-    filteredFlights.forEach(flight => {
+    return filteredFlights.reduce((uniqueRoutes, flight) => {
       const departureCode = flight.departure.airportCode.toLowerCase();
       const arrivalCode = flight.arrival.airportCode.toLowerCase();
       const uniqueId = [departureCode, arrivalCode].sort().join('-');
@@ -55,8 +54,22 @@ export const selectFlightRoutes = createSelector(
           uniqueRoutes.set(uniqueId, getRouteCoordinates(departureAirport, arrivalAirport));
         }
       }
-    });
-
-    return uniqueRoutes;
+      return uniqueRoutes;
+    }, new Map());
   },
+);
+
+export const selectAirportFlights = createSelector(
+  selectFilteredFlightsData,
+  (flights): FlightsMap =>
+    flights.reduce((uniqueFlights, flight) => {
+      const departureCode = flight.departure.airportCode.toLowerCase();
+      const arrivalCode = flight.arrival.airportCode.toLowerCase();
+      const uniqueId = [departureCode, arrivalCode].join('-');
+
+      if (!uniqueFlights.has(uniqueId)) {
+        uniqueFlights.set(uniqueId, flight);
+      }
+      return uniqueFlights;
+    }, new Map()),
 );

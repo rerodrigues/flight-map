@@ -3,11 +3,10 @@ import { LayerGroup } from 'react-leaflet';
 import { useDispatch } from 'react-redux';
 import { useRouteMatch } from 'react-router-dom';
 
-import BaseMap from '../BaseMap/Map';
+import BaseMap, { TitleControl } from '../BaseMap';
 import { Airport } from '../../services/airports/types';
 import { AirportMarker } from './components';
 import { AirportsParams, filterAirportsStart, selectFilteredAirportData } from './store';
-import { TitleControl } from '../BaseMap';
 import { history } from '../../store';
 import { useSelector } from '../../util';
 

@@ -4,18 +4,12 @@ import Paper from '@material-ui/core/Paper';
 import React from 'react';
 import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
-import { makeStyles } from '@material-ui/core/styles';
+import { useStyles } from './styles';
 
 export interface DetailsTabsProps {
   value: number;
   onChange: (event: React.ChangeEvent<{}>, newTab: number) => void;
 }
-
-const useStyles = makeStyles({
-  root: {
-    flexGrow: 1,
-  },
-});
 
 export const DetailsTabs: React.FC<DetailsTabsProps> = (props: DetailsTabsProps) => {
   const classes = useStyles();

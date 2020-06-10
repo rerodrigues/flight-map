@@ -6,8 +6,7 @@ import DeparturesPane from '../DeparturesPane';
 import { Airport } from '../../../../../../services/airports';
 import { DetailTabs } from '../../DetailsCard';
 import { Flight } from '../../../../../../services/flights';
-import { filterFlightsStart, selectFilteredFlightsData } from '../../../../../Flights';
-import { flightsService } from '../../../../../../services';
+import { filterFlightsStart, selectAirportFlights } from '../../../../../Flights/store';
 import { useSelector } from '../../../../../../util';
 
 export interface DetailsPaneProps {
@@ -15,7 +14,9 @@ export interface DetailsPaneProps {
   airport: Airport;
 }
 
-export const formatFlightCode = (flight: Flight): string[] => {
+export type FlightsMap = Map<string, Flight>;
+
+export const getFlightCodes = (flight: Flight): string[] => {
   const flightCode = `${flight.companyCode.toUpperCase()}${flight.number}`;
   if (flight.codeshare) {
     const codeshares = flight.codeshare.split(' - ');
@@ -25,23 +26,8 @@ export const formatFlightCode = (flight: Flight): string[] => {
   return [flightCode];
 };
 
-const getUniqueFligths = (flights: Flight[]): Map<string, Flight> => {
-  const uniqueFlights = new Map();
-
-  flights.forEach(flight => {
-    const departureCode = flight.departure.airportCode;
-    const arrivalCode = flight.arrival.airportCode;
-    const uniqueId = [departureCode, arrivalCode].join('-');
-
-    if (!uniqueFlights.has(uniqueId)) {
-      uniqueFlights.set(uniqueId, flight);
-    }
-  });
-  return uniqueFlights;
-};
-
-const getCategorizedFligths = (airportFlights: Flight[], airportCode: string): Array<Flight[]> =>
-  Array.from(getUniqueFligths(airportFlights).values()).reduce(
+const getCategorizedFligths = (flights: FlightsMap, airportCode: string): Array<Flight[]> =>
+  Array.from(flights.values()).reduce(
     (accumulated: Array<Flight[]>, flight: Flight) => {
       const accumulatedFlights = [...accumulated];
       if (flight.departure.airportCode === airportCode) {
@@ -58,12 +44,11 @@ export const DetailsPanes: React.FC<DetailsPaneProps> = ({ selectedPane, airport
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(filterFlightsStart());
-  }, [dispatch]);
+    dispatch(filterFlightsStart({ icaoCode: airport.icao }));
+  }, [airport.icao, dispatch]);
 
-  const flights = useSelector(selectFilteredFlightsData);
-  const airportFlights = flightsService.filterFlightsByIcao(flights, airport.icao);
-  const [departures, arrivals] = getCategorizedFligths(airportFlights, airport.icao);
+  const flights = useSelector(selectAirportFlights);
+  const [departures, arrivals] = getCategorizedFligths(flights, airport.icao);
 
   const Pane =
     selectedPane === DetailTabs.ARRIVALS ? (

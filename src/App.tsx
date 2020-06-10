@@ -3,9 +3,9 @@ import { useDispatch } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
 
 import { useSelector, isRequestSuccess } from './util';
-import { loadFlightsFetch } from './components/Flights';
-import { loadAirportsFetch } from './components/Airports';
-import { Loading, Routes } from './components/Home';
+import { loadFlightsFetch } from './components/Flights/store';
+import { loadAirportsFetch } from './components/Airports/store';
+import { Loading, Routes } from './components';
 
 import { history } from './store';
 
