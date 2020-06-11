@@ -1,11 +1,10 @@
 import { ActionTypes } from './actionTypes';
 import { AirportAction } from './types';
 import { AirportState, airportInitialState } from './state';
+import { hasValue } from '../../../util';
 
 const airportReducer = (state: AirportState = airportInitialState, action: AirportAction): AirportState => {
-  const hasAction = (actionType: string): actionType is keyof typeof ActionTypes => actionType.length > 0;
-
-  if (!hasAction(action.type)) {
+  if (!hasValue(ActionTypes, action.type)) {
     return state;
   }
 
