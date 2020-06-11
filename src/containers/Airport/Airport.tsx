@@ -8,7 +8,7 @@ import { useSelector } from '../../util';
 import AirportComponent from '../../components/Airport';
 import { AirportParams, findAirport, selectSelectedAirport } from '../../components/Airport/store';
 import { filterAirportsStart, selectFilteredAirportData } from '../../components/Airports/store';
-import { selectFlightRoutes } from '../../components/Flights/store';
+import { selectFlightRoutes, filterFlightsStart, selectAirportFlights } from '../../components/Flights/store';
 
 interface LoadAirportParams {
   params: AirportParams;
@@ -25,13 +25,23 @@ export const Airport: React.FC = () => {
   useEffect(() => {
     dispatch(filterAirportsStart());
     dispatch(findAirport({ icao: params.icao }));
+    dispatch(filterFlightsStart({ icaoCode: params.icao }));
   }, [dispatch, params.icao]);
 
   const airports = useSelector(selectFilteredAirportData);
   const selected = useSelector(selectSelectedAirport);
   const routes = useSelector(selectFlightRoutes);
+  const flights = useSelector(selectAirportFlights);
 
-  return <AirportComponent airports={airports} selected={selected} routes={routes} onMarkerClick={handleMarkerClick} />;
+  return (
+    <AirportComponent
+      airports={airports}
+      selected={selected}
+      routes={routes}
+      flights={flights}
+      onMarkerClick={handleMarkerClick}
+    />
+  );
 };
 
 export default Airport;

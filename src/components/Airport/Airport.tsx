@@ -6,13 +6,14 @@ import { LatLngTuple } from 'leaflet';
 import BaseMap from '../BaseMap';
 import { AirportMarker, FlightRoutes } from '../Airports';
 import { Airport as AirportType } from '../../services/airports';
-import { RoutesMap } from '../Airports/components/FlightRoutes';
 import { DetailsCard } from './components';
+import { RoutesMap, FlightsMap } from '../Flights/store/types';
 
 interface AirportProps {
   airports: AirportType[];
   selected?: AirportType;
   routes: RoutesMap;
+  flights: FlightsMap;
   onMarkerClick: (airport: AirportType) => void;
 }
 
@@ -20,7 +21,7 @@ const getCenter = (selected?: AirportType): LatLngTuple | undefined =>
   selected ? [selected.lat, selected.lng] : undefined;
 
 export const Airport: React.FC<AirportProps> = (props: AirportProps) => {
-  const { airports, selected, routes, onMarkerClick } = props;
+  const { airports, selected, routes, flights, onMarkerClick } = props;
 
   return (
     <Grid container>
@@ -42,7 +43,7 @@ export const Airport: React.FC<AirportProps> = (props: AirportProps) => {
       </Grid>
       {selected && (
         <Grid item xs={12} sm={8} md={3}>
-          <DetailsCard airport={selected} />
+          <DetailsCard airport={selected} flights={flights} />
         </Grid>
       )}
     </Grid>
