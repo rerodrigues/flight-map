@@ -16,7 +16,7 @@ export interface FindFlightError {
 }
 
 export interface FlightParams {
-  icao: string;
+  id: string;
 }
 
 export type FlightAction = FindFlight | FindFlightSuccess | FindFlightError;

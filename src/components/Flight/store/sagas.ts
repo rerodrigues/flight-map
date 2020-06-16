@@ -17,8 +17,7 @@ export function* findFlightSaga(action: FindFlight): SagaIterator {
     }
 
     const flights = yield select(selectFlightsData);
-
-    const flight = yield call(flightsService.findFlightById, flights.data, action.payload.icao);
+    const flight = yield call(flightsService.findFlightById, flights.data, action.payload.id);
     yield put(findFlightSuccess(flight));
   } catch (error) {
     console.log(error);
