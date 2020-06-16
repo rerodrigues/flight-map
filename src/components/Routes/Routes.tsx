@@ -1,7 +1,7 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { Flights, Airports, Menu } from '..';
-import { Airport } from '../../containers';
+import { Airport, Flight } from '../../containers';
 
 export const Routes: React.FC = () => (
   <Switch>
@@ -13,6 +13,9 @@ export const Routes: React.FC = () => (
     </Route>
     <Route exact path="/airport/:icao">
       <Airport />
+    </Route>
+    <Route exact path="/flight/:id">
+      <Flight />
     </Route>
     <Route path="/menu">
       <Menu />
