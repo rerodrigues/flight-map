@@ -1,5 +1,18 @@
 import React from 'react';
-import { Card, CardContent, Typography } from '@material-ui/core';
+import {
+  Card,
+  CardContent,
+  Typography,
+  Divider,
+  Grid,
+  List,
+  ListItem,
+  ListItemAvatar,
+  Avatar,
+  ListItemText,
+} from '@material-ui/core';
+import FlightTakeoffIcon from '@material-ui/icons/FlightTakeoff';
+import FlightLandIcon from '@material-ui/icons/FlightLand';
 
 import { Airport, createNameFromInfo } from '../../../../services/airports';
 import { useStyles } from './styles';
@@ -19,22 +32,42 @@ export const DetailsCard: React.FC<DetailsCardProps> = (props: DetailsCardProps)
   return (
     <Card className={classes.root}>
       <CardContent>
-        <Typography gutterBottom variant="h5" component="p">
-          {flight!.companyCode}
-          {flight!.number} - {flight!.company}
-        </Typography>
-        <Typography gutterBottom variant="h5" component="p">
-          {departure!.name}
-        </Typography>
-        <Typography gutterBottom variant="body2" component="p">
-          {createNameFromInfo(departure!)}
-        </Typography>
-        <Typography gutterBottom variant="h5" component="p">
-          {arrival!.name}
-        </Typography>
-        <Typography gutterBottom variant="body2" component="p">
-          {createNameFromInfo(arrival!)}
-        </Typography>
+        <div className={classes.section1}>
+          <Grid container alignItems="center">
+            <Grid item xs>
+              <Typography gutterBottom variant="h4">
+                {flight!.companyCode}
+                {flight!.number}
+              </Typography>
+            </Grid>
+            <Grid item>
+              <Typography gutterBottom variant="h6">
+                {flight!.company}
+              </Typography>
+            </Grid>
+          </Grid>
+        </div>
+        <Divider />
+        <List className={classes.list}>
+          <ListItem>
+            <ListItemAvatar>
+              <Avatar>
+                <FlightTakeoffIcon />
+              </Avatar>
+            </ListItemAvatar>
+            <ListItemText primary={departure!.name} secondary={createNameFromInfo(departure!)} />
+          </ListItem>
+          <Divider component="li" />
+          <ListItem>
+            <ListItemAvatar>
+              <Avatar>
+                <FlightLandIcon />
+              </Avatar>
+            </ListItemAvatar>
+            <ListItemText primary={arrival!.name} secondary={createNameFromInfo(arrival!)} />
+          </ListItem>
+        </List>
+        <Divider />
       </CardContent>
     </Card>
   );
