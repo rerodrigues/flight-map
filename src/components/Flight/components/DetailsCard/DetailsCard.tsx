@@ -1,28 +1,40 @@
+import FlightIcon from '@material-ui/icons/Flight';
+import FlightLandIcon from '@material-ui/icons/FlightLand';
+import FlightTakeoffIcon from '@material-ui/icons/FlightTakeoff';
 import React from 'react';
 import {
+  Avatar,
   Card,
   CardContent,
-  Typography,
   Divider,
   Grid,
   List,
   ListItem,
   ListItemAvatar,
-  Avatar,
   ListItemText,
+  Typography,
 } from '@material-ui/core';
-import FlightTakeoffIcon from '@material-ui/icons/FlightTakeoff';
-import FlightLandIcon from '@material-ui/icons/FlightLand';
 
 import { Airport, createNameFromInfo } from '../../../../services/airports';
-import { useStyles } from './styles';
 import { Flight } from '../../../../services/flights/types';
+import { aircraftManufacturers } from '../../../Flights/store/types';
+import { useStyles } from './styles';
 
 interface DetailsCardProps {
   departure?: Airport;
   arrival?: Airport;
   flight?: Flight;
 }
+
+const getManufacturer = (planeModel: string): string => {
+  const modelMatch = planeModel.toUpperCase().match(/^[A-Z]+/);
+  if (modelMatch) {
+    const manufacturers = new Map(Object.entries(aircraftManufacturers));
+    return manufacturers.get(modelMatch[0]) || 'Model';
+  }
+
+  return 'Model';
+};
 
 export const DetailsCard: React.FC<DetailsCardProps> = (props: DetailsCardProps) => {
   const { departure, arrival, flight } = props;
@@ -65,6 +77,18 @@ export const DetailsCard: React.FC<DetailsCardProps> = (props: DetailsCardProps)
               </Avatar>
             </ListItemAvatar>
             <ListItemText primary={arrival!.name} secondary={createNameFromInfo(arrival!)} />
+          </ListItem>
+          <Divider component="li" />
+          <ListItem>
+            <ListItemAvatar>
+              <Avatar>
+                <FlightIcon />
+              </Avatar>
+            </ListItemAvatar>
+            <ListItemText
+              primary={`${getManufacturer(flight!.planeModel)} ${flight!.planeModel}`}
+              secondary={`${flight!.numberOfSeats} seats`}
+            />
           </ListItem>
         </List>
         <Divider />
