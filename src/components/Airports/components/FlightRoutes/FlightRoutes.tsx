@@ -2,19 +2,20 @@
 import React from 'react';
 // @ts-ignore
 import { Curve } from 'react-leaflet-curve';
-import { LatLngTuple } from 'leaflet';
 import { withLeaflet } from 'react-leaflet';
 
 import { curvedPath } from '../../../../util';
+import { RoutesMap } from '../../../Flights/store/types';
 
 const WrappedCurve = withLeaflet(Curve);
 
-export type RoutesMap = Map<string, LatLngTuple[]>;
 interface FlightRouteProps {
   routes: RoutesMap;
 }
 
-const FlightRoute: React.FC<FlightRouteProps> = ({ routes }: FlightRouteProps) => {
+const FlightRoute: React.FC<FlightRouteProps> = (props: FlightRouteProps) => {
+  const { routes } = props;
+
   return (
     <>
       {Array.from(routes)

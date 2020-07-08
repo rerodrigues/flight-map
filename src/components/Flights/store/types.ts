@@ -1,3 +1,4 @@
+import { LatLngTuple } from 'leaflet';
 import { ActionTypes } from './actionTypes';
 import { Flight } from '../../../services/flights/types';
 import { RequestError } from '../../../util';
@@ -41,3 +42,6 @@ export type FlightsAction =
   | FilterFlightsStart
   | FilterFlightsSuccess
   | FilterFlightsError;
+
+export type RoutesMap = Map<string, LatLngTuple[]>;
+export type FlightsMap = Map<string, Flight>;

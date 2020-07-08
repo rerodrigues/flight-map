@@ -1,20 +1,17 @@
-import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import React from 'react';
 
 import ArrivalsPane from '../ArrivalsPane';
 import DeparturesPane from '../DeparturesPane';
 import { Airport } from '../../../../../../services/airports';
 import { DetailTabs } from '../../DetailsCard';
 import { Flight } from '../../../../../../services/flights';
-import { filterFlightsStart, selectAirportFlights } from '../../../../../Flights/store';
-import { useSelector } from '../../../../../../util';
+import { FlightsMap } from '../../../../../Flights/store/types';
 
 export interface DetailsPaneProps {
   selectedPane: number;
   airport: Airport;
+  flights: FlightsMap;
 }
-
-export type FlightsMap = Map<string, Flight>;
 
 export const getFlightCodes = (flight: Flight): string[] => {
   const flightCode = `${flight.companyCode.toUpperCase()}${flight.number}`;
@@ -40,14 +37,9 @@ const getCategorizedFligths = (flights: FlightsMap, airportCode: string): Array<
     [[], []],
   );
 
-export const DetailsPanes: React.FC<DetailsPaneProps> = ({ selectedPane, airport }: DetailsPaneProps) => {
-  const dispatch = useDispatch();
+export const DetailsPanes: React.FC<DetailsPaneProps> = (props: DetailsPaneProps) => {
+  const { selectedPane, airport, flights } = props;
 
-  useEffect(() => {
-    dispatch(filterFlightsStart({ icaoCode: airport.icao }));
-  }, [airport.icao, dispatch]);
-
-  const flights = useSelector(selectAirportFlights);
   const [departures, arrivals] = getCategorizedFligths(flights, airport.icao);
 
   const Pane =

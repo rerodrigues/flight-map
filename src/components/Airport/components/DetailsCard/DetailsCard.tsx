@@ -4,9 +4,11 @@ import { Card, CardContent, Typography } from '@material-ui/core';
 import { Airport, createNameFromInfo } from '../../../../services/airports';
 import { DetailsPanes, DetailsTabs } from './components';
 import { useStyles } from './styles';
+import { FlightsMap } from '../../../Flights/store/types';
 
 interface DetailsCardProps {
   airport: Airport;
+  flights: FlightsMap;
 }
 
 export enum DetailTabs {
@@ -14,7 +16,9 @@ export enum DetailTabs {
   ARRIVALS,
 }
 
-export const DetailsCard: React.FC<DetailsCardProps> = ({ airport }: DetailsCardProps) => {
+export const DetailsCard: React.FC<DetailsCardProps> = (props: DetailsCardProps) => {
+  const { airport, flights } = props;
+
   const classes = useStyles();
 
   const [activeTab, setValue] = React.useState(DetailTabs.DEPARTURES);
@@ -34,7 +38,7 @@ export const DetailsCard: React.FC<DetailsCardProps> = ({ airport }: DetailsCard
         </Typography>
       </CardContent>
       <DetailsTabs value={activeTab} onChange={handleChangeTab} />
-      <DetailsPanes selectedPane={activeTab} airport={airport} />
+      <DetailsPanes selectedPane={activeTab} airport={airport} flights={flights} />
     </Card>
   );
 };
