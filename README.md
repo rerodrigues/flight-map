@@ -1,8 +1,27 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Flight Maps BR
 
-## Available Scripts
+> An interactive map of all flights from/to every Brazilian airport
 
-In the project directory, you can run:
+<p align="center">
+  <a href="http://flight-map-br.herokuapp.com" target="_blank" alt="Live Demo" title="Live Demo">
+    <img width="300" height="300" src="public/logo512.png">
+  </a>
+</p>
+
+[Live demo](http://flight-map-br.herokuapp.com)
+
+## Usage
+
+Create a file in the root of the project called `.env.local` with the the paths of the datafiles
+
+The following config should work, however I recommend hosting the datafiles yourself. _(thx @hugosenari for the datafiles)_
+
+```
+REACT_APP_AIRPORTS_URL=https://raw.githubusercontent.com/hugosenari/voos/master/data/airports.json
+REACT_APP_FLIGHTS_URL=https://raw.githubusercontent.com/hugosenari/voos/master/data/voos.json
+```
+
+Then, in the project directory, you can run:
 
 ### `yarn start`
 
@@ -11,6 +30,9 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 The page will reload if you make edits.<br />
 You will also see any lint errors in the console.
+
+<details>
+  <summary>All available additional scripts</summary>
 
 ### `yarn test`
 
@@ -37,8 +59,39 @@ Instead, it will copy all the configuration files and the transitive dependencie
 
 You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-## Learn More
+</details>
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Motivation and Goals
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Despite being fully functional and the data displayed being real, this project was conceived to be a playground to test new technologies, especially the new versions/replacements of the technologies that I and my team use on our daily projects.
+It was never intended to be a finished product, serving as a more flexible and less critic environment to test new libs, patterns and paradigms while still fully functional.
+The main goal here is to validate the viability of implementing these discoveries into our projects, while learning from them.
+
+## Technologies used
+
+* [React](https://reactjs.org/)
+* [Typescript](https://www.typescriptlang.org/)
+* [Create React App](https://github.com/facebook/create-react-app)
+* [Redux](https://redux.js.org/)
+* [Redux Saga](https://redux-saga.js.org/)
+* [Reselect](https://github.com/reduxjs/reselect)
+* [Connected React Router](https://github.com/supasate/connected-react-router)
+* [React Hooks](https://reactjs.org/docs/hooks-intro.html)
+* [Axios](https://github.com/axios/axios)
+* [Leaflet](https://leafletjs.com/)
+* [React Leaflet](https://react-leaflet.js.org/)
+* [Material-UI](https://material-ui.com/)
+* [Material-UI Icons](https://material-ui.com/components/material-icons/)
+* [JSS](https://material-ui.com/styles/basics/)
+* [ESLint](https://eslint.org/)
+* [ESLint Config Airbnb](https://www.npmjs.com/package/eslint-config-airbnb)
+* [Prettier](https://prettier.io/)
+* [Husky](https://github.com/typicode/husky)
+* [Lint Staged](https://github.com/okonet/lint-staged)
+* [Yarn](https://yarnpkg.com/)
+* [Jest](https://jestjs.io/)
+* [React Testing Library](https://testing-library.com/docs/react-testing-library/intro)
+
+---
+
+_2020 - Renato Rodrigues - No rigths reserved_
