@@ -24,6 +24,7 @@
     "leaflet": "^1.6.0",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
+    "react-easy-emoji": "^1.4.0",
     "react-leaflet": "^2.6.1",
     "react-leaflet-control": "^2.1.2",
     "react-leaflet-curve": "^2.0.1",
