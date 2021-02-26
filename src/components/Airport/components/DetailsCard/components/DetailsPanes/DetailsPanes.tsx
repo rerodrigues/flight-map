@@ -6,6 +6,7 @@ import { Airport } from '../../../../../../services/airports';
 import { DetailTabs } from '../../DetailsCard';
 import { Flight } from '../../../../../../services/flights';
 import { FlightsMap } from '../../../../../Flights/store/types';
+import { getCodeShares } from '../../../../../../services/flights/transformers';
 
 export interface DetailsPaneProps {
   selectedPane: number;
@@ -16,9 +17,8 @@ export interface DetailsPaneProps {
 export const getFlightCodes = (flight: Flight): string[] => {
   const flightCode = `${flight.companyCode.toUpperCase()}${flight.number}`;
   if (flight.codeshare) {
-    const codeshares = flight.codeshare.split(' - ');
-    codeshares.unshift(flightCode);
-    return codeshares.map((codeshare: string) => codeshare.replace('/', ''));
+    const codeshares = getCodeShares(flight.codeshare);
+    return [flightCode, ...codeshares];
   }
   return [flightCode];
 };

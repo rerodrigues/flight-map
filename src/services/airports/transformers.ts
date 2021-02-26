@@ -1,19 +1,19 @@
-import { AirportRaw, Airport, DetailedInfo } from './types';
+import { Airport, AirportRaw, DetailedInfo } from './types';
+
+const getInfoFromName = (name: string): DetailedInfo => {
+  const nameRegex = /^([^/]+)\/([^,]+)(?:,\s*(\w{2}))?/;
+  const info = name.match(nameRegex);
+
+  return info
+    ? {
+        name: info[2],
+        city: info[1],
+        state: info[3],
+      }
+    : { name };
+};
 
 export const toAirport = (rawAirport: AirportRaw): Airport => {
-  const getInfoFromName = (name: string): DetailedInfo => {
-    const nameRegex = /^([^/]+)\/([^,]+)(?:,\s*(\w{2}))?/;
-    const info = name.match(nameRegex);
-
-    return info
-      ? {
-          name: info[2],
-          city: info[1],
-          state: info[3],
-        }
-      : { name };
-  };
-
   const detailedInfo = getInfoFromName(rawAirport.name);
 
   return {

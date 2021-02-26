@@ -1,4 +1,5 @@
 import { LatLngTuple } from 'leaflet';
+
 import { ActionTypes } from './actionTypes';
 import { Flight } from '../../../services/flights/types';
 import { RequestError } from '../../../util';
@@ -45,3 +46,14 @@ export type FlightsAction =
 
 export type RoutesMap = Map<string, LatLngTuple[]>;
 export type FlightsMap = Map<string, Flight>;
+
+export enum aircraftManufacturers {
+  B = 'Boeing',
+  A = 'Airbus',
+  E = 'Embraer',
+  CRJ = 'Canadair/Bombardier',
+  AT = 'ATR',
+  IL = 'Ilyushin',
+  MD = 'McDonnell Douglas',
+  C = 'Cessna',
+}

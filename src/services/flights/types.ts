@@ -1,4 +1,4 @@
-export enum WeekDay {
+export enum Weekday {
   MON = 2.0,
   TUE = 3.0,
   WED = 4.0,
@@ -8,7 +8,7 @@ export enum WeekDay {
   SUN = 'D',
 }
 
-export enum OperationType {
+enum OperationType {
   'NATIONAL' = 'Nacional',
   'INTERNATIONAL' = 'Internacional',
   'REGIONAL' = 'Regional',
@@ -22,13 +22,13 @@ export interface FlightRaw {
   Empresa: string;
   'Nº VOO': number;
   'Equip.': string;
-  Seg: WeekDay.MON;
-  Ter: WeekDay.TUE;
-  Qua: WeekDay.WED;
-  Qui: WeekDay.THU;
-  Sex: WeekDay.FRI;
-  Sáb: WeekDay.SAT;
-  Dom: WeekDay.SUN;
+  Seg: Weekday.MON | null;
+  Ter: Weekday.TUE | null;
+  Qua: Weekday.WED | null;
+  Qui: Weekday.THU | null;
+  Sex: Weekday.FRI | null;
+  Sáb: Weekday.SAT | null;
+  Dom: Weekday.SUN | null;
   'Qtde Assentos': number;
   'Número Hotran': string;
   'Data Solicitação': string; // DATE
@@ -59,19 +59,23 @@ interface Event {
   time: string; // HOUR
 }
 
+interface Weekdays {
+  monday: number;
+  tuesday: number;
+  wednesday: number;
+  thursday: number;
+  friday: number;
+  saturday: number;
+  sunday: number;
+}
+
 export interface Flight {
   id: string;
   companyCode: string;
   company: string;
   number: number;
   planeModel: string;
-  monday: WeekDay.MON;
-  tuesday: WeekDay.TUE;
-  wednesday: WeekDay.WED;
-  thursday: WeekDay.THU;
-  friday: WeekDay.FRI;
-  saturday: WeekDay.SAT;
-  sunday: WeekDay.SUN;
+  weekdays: Weekdays;
   numberOfSeats: number;
   schedulePlan: SchedulePlan;
   operationType: OperationType.INTERNATIONAL;

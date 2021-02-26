@@ -1,7 +1,14 @@
-import { FlightRaw, Flight } from './types';
+import { FlightRaw, Flight, Weekday } from './types';
 
-const generateUniqueIdFrom = ({ number, companyCode, departure, arrival, codeshare }: Omit<Flight, 'id'>): string => {
-  return `${number}-${companyCode}-${departure.airportCode}-${arrival.airportCode}-${codeshare || Math.random()}`;
+export const getCodeShares = (codeshares?: string): string[] =>
+  codeshares ? codeshares.split(' - ').map(codeshare => codeshare.replace('/', '')) : [];
+
+const generateUniqueIdFrom = (flight: Omit<Flight, 'id'>): string => {
+  const { number, companyCode, departure, arrival, codeshare, weekdays } = flight;
+  const { monday, tuesday, wednesday, thursday, friday, saturday, sunday } = weekdays;
+  const days = [monday, tuesday, wednesday, thursday, friday, saturday, sunday].reduce((sum, day) => sum + day, 0);
+  const codeshares = getCodeShares(codeshare);
+  return [number, companyCode, departure.airportCode, arrival.airportCode, codeshares.join('_'), days].join('-');
 };
 
 export const toFlight = (rawFlight: FlightRaw): Flight => {
@@ -10,13 +17,15 @@ export const toFlight = (rawFlight: FlightRaw): Flight => {
     company: rawFlight.Empresa,
     number: rawFlight['Nº VOO'],
     planeModel: rawFlight['Equip.'],
-    monday: rawFlight.Seg,
-    tuesday: rawFlight.Ter,
-    wednesday: rawFlight.Qua,
-    thursday: rawFlight.Qui,
-    friday: rawFlight.Sex,
-    saturday: rawFlight.Sáb,
-    sunday: rawFlight.Dom,
+    weekdays: {
+      monday: rawFlight.Seg ? 1 : 0,
+      tuesday: rawFlight.Ter ? 2 : 0,
+      wednesday: rawFlight.Qua ? 4 : 0,
+      thursday: rawFlight.Qui ? 8 : 0,
+      friday: rawFlight.Sex ? 16 : 0,
+      saturday: rawFlight.Sáb ? 32 : 0,
+      sunday: rawFlight.Dom ? 64 : 0,
+    },
     numberOfSeats: rawFlight['Qtde Assentos'],
     schedulePlan: {
       code: rawFlight['Número Hotran'],
@@ -51,13 +60,13 @@ export const toFlightRaw = (flight: Flight): FlightRaw => ({
   Empresa: flight.company,
   'Nº VOO': flight.number,
   'Equip.': flight.planeModel,
-  Seg: flight.monday,
-  Ter: flight.tuesday,
-  Qua: flight.wednesday,
-  Qui: flight.thursday,
-  Sex: flight.friday,
-  Sáb: flight.saturday,
-  Dom: flight.sunday,
+  Seg: flight.weekdays.monday ? Weekday.MON : null,
+  Ter: flight.weekdays.tuesday ? Weekday.TUE : null,
+  Qua: flight.weekdays.wednesday ? Weekday.WED : null,
+  Qui: flight.weekdays.thursday ? Weekday.THU : null,
+  Sex: flight.weekdays.friday ? Weekday.FRI : null,
+  Sáb: flight.weekdays.saturday ? Weekday.SAT : null,
+  Dom: flight.weekdays.sunday ? Weekday.SUN : null,
   'Qtde Assentos': flight.numberOfSeats,
   'Número Hotran': flight.schedulePlan.code,
   'Data Solicitação': flight.schedulePlan.dateRequested,
