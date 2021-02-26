@@ -5,14 +5,21 @@ import { Airport } from '../../containers';
 
 export const Routes: React.FC = () => (
   <Switch>
-    <Route exact path="/airports" component={Airports} />
-    <Route exact path="/airports/country/:countryId" component={Airports} />
-    <Route exact path="/flights" component={Flights} />
-    <Route exact path="/flights/company/:companyCode" component={Flights} />
-    <Route exact path="/flights/airport/:icaoCode" component={Flights} />
-    <Route exact path="/airport/:icao" component={Airport} />
-    <Route path="/menu" component={Menu} />
-    <Route path="/" component={Airports} />
+    <Route exact path={['/airports', '/airports/country/:countryId']}>
+      <Airports />
+    </Route>
+    <Route exact path={['/flights', '/flights/company/:companyCode', '/flights/airport/:icaoCode']}>
+      <Flights />
+    </Route>
+    <Route exact path="/airport/:icao">
+      <Airport />
+    </Route>
+    <Route path="/menu">
+      <Menu />
+    </Route>
+    <Route path="/">
+      <Airports />
+    </Route>
   </Switch>
 );
 
